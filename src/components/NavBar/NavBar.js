@@ -16,16 +16,23 @@ const NavBar = () =>{
         setPesquisa("");
     };
 
+    const selecaoCategoria = (categoria) => {
+        const valor = categoria.target.value;
+        if (!valor) return;
+        navigate(`/categoria?nome=${valor}`, { replace: true });
+    };
+
     return (
         <nav id="navbar">
             <h2>
                 <Link to="/"> Biblioteca de filmes </Link>
             </h2>
 
-            <select>
-                <option value="popularity">Popularidade</option>
-                <option value="vote_average">Nota</option>
-                <option value="release_date">Data de lançamento</option>
+            <select onChange={selecaoCategoria} defaultValue={""}>
+                <option value="" disabled>Selecionar categoria</option>
+                <option value="top_rated">Melhores avaliados</option>
+                <option value="now_playing">Últimos lançamentos</option>
+                <option value="upcoming">Próximos lançamentos</option>
             </select>
 
             <form onSubmit={preencherSubmit}>
@@ -33,7 +40,8 @@ const NavBar = () =>{
                 placeholder="Digite o nome de um filme..."
                 onChange={(busca) => setPesquisa(busca.target.value)}
                 value={pesquisa}
-            />
+                />
+
                 <button type="submit"> Buscar </button>
             </form>
         </nav>

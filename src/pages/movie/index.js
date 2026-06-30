@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import ContainerFilmes from "../../components/Container-filmes/Container-filmes";
 import CardIndividual from "../../components/Card-individual/cardIndividual"
 
-import { MovieList, Info, ContainerIndividual, Conteudo } from "../style";
+import { Info, ContainerIndividual, Conteudo } from "../style";
 
 const Movie = () => {
     const { id } = useParams();
@@ -33,9 +32,6 @@ const Movie = () => {
     return (
         <ContainerIndividual>
             <Conteudo>
-                <MovieList>
-                {movie && <ContainerFilmes key={movie.id} movie={movie} grid={false} />} 
-                </MovieList>
                 <Info>
                     {movie && <CardIndividual key={movie.id} movie = {movie}/>}
                 </Info>

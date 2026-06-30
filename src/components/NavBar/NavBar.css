@@ -13,6 +13,7 @@ button{
     display: flex;
     justify-content: left;
     gap: 3%;
+    background-color: #141414bc;
 }
 
 a{

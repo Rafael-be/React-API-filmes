@@ -11,9 +11,17 @@ const formatCurrency = (numero) =>{
     return formatado;
 }
 
+const imagePath = process.env.REACT_APP_IMAGE_URL;
+
 const cardIndividual = ({movie}) => {
     return(
         <Info>
+          <div className="imagem">
+            <img
+              src={`${imagePath}${movie.poster_path}`}
+              alt={movie.title}
+            />
+          </div>
           <h3 id="titulo">{movie.title}</h3>
           <p className="tagline">{movie.tagline}</p>
           <div className="info">
