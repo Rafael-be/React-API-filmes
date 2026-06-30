@@ -1,39 +1,30 @@
 import { useEffect, useState } from "react";
-import { Container, Movie, MovieList, Btn } from "./style";
-import { Link } from "react-router-dom";
+import { Container, MovieList } from "../style";
+import ContainerFilmes from '../../components/Container-filmes/Container-filmes'
 
 function Home() {
-    const imagePath = "https://image.tmdb.org/t/p/w500";
+    const URL = process.env.REACT_APP_URL;
+    const KEY = process.env.REACT_APP_KEY;
 
     const [movies, setMovies] = useState([]);
-    const KEY = process.env.REACT_APP_KEY;
-    useEffect(() => {
-        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${KEY}&language=pt-BR`)
-            .then((response) => response.json())
-            .then((data) => {
-                setMovies(data.results);
-            });
-    }, [KEY]);
 
+    const obterFilmesPopulares = async (urlParaFetch) => {
+        const res = await fetch(urlParaFetch);
+        const dados = await res.json();
+        setMovies(dados.results);
+    }
+
+    useEffect(() => {
+        const urlParaFetch = `${URL}popular?api_key=${KEY}&language=pt-BR`;
+        obterFilmesPopulares(urlParaFetch);
+    }, [KEY, URL]);
+
+    
     return (
         <Container>
-            <h1>Movies</h1>
+            <h1> FILMES </h1>
             <MovieList>
-                {movies.map((movie) => {
-                    return (
-                        <Movie key={movie.id}>
-                            <img
-                                src={`${imagePath}${movie.poster_path}`}
-                                alt="{movie.title}"
-                            />
-                            <span>{movie.title}</span>
-
-                            <Link to={`/${movie.id}`}>
-                                <Btn>Detalhes</Btn>
-                            </Link>
-                        </Movie>
-                    );
-                })}
+                {movies.map((movie) => (<ContainerFilmes key={movie.id} movie={movie} />))} 
             </MovieList>
         </Container>
     );

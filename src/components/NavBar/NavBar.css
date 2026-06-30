@@ -1,0 +1,48 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+button{
+    cursor: pointer;
+}
+
+#navbar{
+    padding: 1rem;
+    display: flex;
+    justify-content: left;
+    gap: 3%;
+}
+
+a{
+    text-decoration: none;
+    color: #f3fd6b;
+    background-color: transparent;
+}
+
+select{
+    padding: .5%;
+    border-radius: 5px;
+    background-color: transparent;
+    color: white;
+    cursor: pointer;
+}
+
+form{
+    padding: .025%;
+    gap: 0.1rem;
+    display: flex;
+}
+
+input, button{
+    padding: .3rem;  
+    border-radius: 5px;  
+    border: 1px black solid;
+}
+
+option{
+    border: 1px solid black;
+    background-color: rgba(255, 255, 255, 0.468);
+    color: #000000;
+}

@@ -1,51 +1,46 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-import "./styles.css";
+
+import ContainerFilmes from "../../components/Container-filmes/Container-filmes";
+import CardIndividual from "../../components/Card-individual/cardIndividual"
+
+import { MovieList, Info, ContainerIndividual, Conteudo } from "../style";
 
 const Movie = () => {
     const { id } = useParams();
-    const imagePath = "https://image.tmdb.org/t/p/w500";
 
-    const [movie, setMovie] = useState([]);
     const KEY = process.env.REACT_APP_KEY;
+    const URL = process.env.REACT_APP_URL;
+
+    const [movie, setMovie] = useState(null);
+    
+    const obterFilmesPopulares = async (urlParaFetch) => {
+        const res = await fetch(urlParaFetch);
+        const dados = await res.json();
+        setMovie(dados);
+        return dados;
+    }
+
     useEffect(() => {
-        fetch(
-            `https://api.themoviedb.org/3/movie/popular?api_key=${KEY}&language=pt-BR`
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                const res = data.results;
-                let filme = res.find((key) => {
-                    // eslint-disable-next-line
-                    return key.id == id;
-                });
-                setMovie(filme);
-            }); // eslint-disable-next-line
-    }, []);
+        const carregarFilme = async () => {
+            const urlParaFetch = `${URL}${id}?api_key=${KEY}&language=pt-BR`;
+            let filmeEncontrado = await obterFilmesPopulares(urlParaFetch)
+            setMovie(filmeEncontrado);
+        }
+        carregarFilme();
+    }, [KEY, URL, id]);
 
     return (
-        <div>
-            <nav>
-                <h1>Movie</h1>
-            </nav>
-            <img
-                className="img_movie"
-                src={`${imagePath}${movie.poster_path}`}
-                alt="{movie.title}"
-            />
-            <div className="container">
-                <h1>{movie.title}</h1>
-                <h3>Data de lançamento: {movie.release_date}</h3>
-                <div className="descricao">
-                    <h4>Descrição: </h4>
-                    <p className="movie-desc">{movie.overview}</p>
-                </div>
-                <Link to="/">
-                    <button className="link_button">Voltar</button>
-                </Link>
-            </div>
-        </div>
+        <ContainerIndividual>
+            <Conteudo>
+                <MovieList>
+                {movie && <ContainerFilmes key={movie.id} movie={movie} grid={false} />} 
+                </MovieList>
+                <Info>
+                    {movie && <CardIndividual key={movie.id} movie = {movie}/>}
+                </Info>
+            </Conteudo>
+        </ContainerIndividual>
     );
 };
 
