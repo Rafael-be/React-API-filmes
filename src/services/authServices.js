@@ -1,4 +1,4 @@
-import { supabase } from "./supabaseClient";
+import { supabase } from "./supaBase";
 
 export const cadastrar = (email, senha) =>
   supabase.auth.signUp({ email, password: senha });

@@ -11,9 +11,24 @@ button{
 #navbar{
     padding: 1rem;
     display: flex;
-    justify-content: left;
+    justify-content: space-between; /* ALTERADO */
+    align-items: center; /* NOVO */
     gap: 3%;
     background-color: #141414bc;
+}
+
+/* NOVO */
+#navbar-esquerda{
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    gap: 1rem;
+}
+
+/* NOVO */
+#navbar-direita{
+    display: flex;
+    align-items: center;
 }
 
 a{
@@ -46,4 +61,48 @@ option{
     border: 1px solid black;
     background-color: rgba(255, 255, 255, 0.468);
     color: #000000;
+}
+
+/* NOVO */
+#perfil{
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #f7d354;
+    border: 2px solid rgba(247, 211, 84, 0.4);
+    transition: opacity 0.2s;
+}
+
+/* NOVO */
+#perfil:hover{
+    opacity: 0.8;
+}
+
+/* NOVO */
+@media (max-width: 768px) {
+    #navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    #navbar-esquerda {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    #navbar-direita {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+    }
 }

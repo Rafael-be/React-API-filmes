@@ -7,8 +7,8 @@ import MovieById from "./pages/movie"
 import Home from "./pages/home"
 import Categorias from "./pages/categorias"
 import Pesquisa from "./pages/pesquisa"
-// import Login from "./pages/login"
-// import Cadastro from "./pages/cadastro"
+import Login from "./pages/login"
+import Cadastro from "./pages/cadastro"
 // import Favoritos from "./pages/favoritos"
 
 import { AuthProvider } from "./contexts/AuthContext";
@@ -24,8 +24,8 @@ root.render(
         <Routes>
 
           {/* Está fora do app porque tem layout próprio */}
-          {/* <Route path="/login" element={<Login />} />
-          <Route path="/cadastro" element={<Cadastro />} /> */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/cadastro" element={<Cadastro />} />
 
           <Route path="/" element={<App />} >
 

@@ -22,8 +22,9 @@ const NavBar = () =>{
         navigate(`/categoria?nome=${valor}`, { replace: true });
     };
 
-    return (
-        <nav id="navbar">
+   return (
+    <nav id="navbar">
+        <div id="navbar-esquerda">
             <h2>
                 <Link to="/"> Biblioteca de filmes </Link>
             </h2>
@@ -41,11 +42,18 @@ const NavBar = () =>{
                 onChange={(busca) => setPesquisa(busca.target.value)}
                 value={pesquisa}
                 />
-
                 <button type="submit"> Buscar </button>
             </form>
-        </nav>
-    );
+        </div>
+
+        {/* NOVO */}
+        <div id="navbar-direita">
+            <Link to="/favoritos">
+                <div id="perfil"></div>
+            </Link>
+        </div>
+    </nav>
+);
 }
 
 export default NavBar;

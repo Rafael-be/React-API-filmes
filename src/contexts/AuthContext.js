@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "../services/supaBaseClient";
+import { supabase } from "../services/supaBase";
 
 const AuthContext = createContext();
 
@@ -20,14 +20,14 @@ export const AuthProvider = ({ children }) => {
     });
 
     // escuta mudanças de login/logout em tempo real
-    supabase.auth.onAuthStateChange((_event, session) => {
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
         if (session && session.user)
             setUsuario(session.user);
         else 
             setUsuario(null);
     });
 
-    return () => listener.subscription.unsubscribe();
+    return () => data.subscription.unsubscribe();
   }, []);
 
   return (

@@ -1,0 +1,113 @@
+/* compartilhe esse arquivo entre login e cadastro */
+
+body {
+    margin: 0;
+    background: #0f0f0f;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    color: #f2f2f2;
+}
+
+.login,
+.cadastro {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.login form,
+.cadastro form {
+    background: #1a1a1a;
+    border: 1px solid rgba(247, 211, 84, 0.15);
+    border-radius: 1rem;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.8);
+}
+
+.login h2,
+.cadastro h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.login input,
+.cadastro input {
+    background: #242424;
+    border: 1px solid #333;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: #f2f2f2;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.login input:focus,
+.cadastro input:focus {
+    border-color: #f7d354;
+}
+
+.login button,
+.cadastro button {
+    background: #f7d354;
+    color: #0f0f0f;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 0.5rem;
+}
+
+.login button:hover,
+.cadastro button:hover {
+    opacity: 0.85;
+}
+
+.login p,
+.cadastro p {
+    margin-top: 1.25rem;
+    font-size: 0.9rem;
+    color: #b8b8b8;
+}
+
+.login p a,
+.cadastro p a {
+    color: #f7d354;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login p a:hover,
+.cadastro p a:hover {
+    text-decoration: underline;
+}
+
+.erro {
+    background: rgba(220, 53, 69, 0.15);
+    border: 1px solid rgba(220, 53, 69, 0.4);
+    border-radius: 0.5rem;
+    padding: 0.6rem 1rem;
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    max-width: 380px;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .login form,
+    .cadastro form {
+        margin: 0 1rem;
+        padding: 2rem 1.25rem;
+    }
+}
