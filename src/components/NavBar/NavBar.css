@@ -29,6 +29,7 @@ button{
 #navbar-direita{
     display: flex;
     align-items: center;
+    gap: 1rem;
 }
 
 a{
@@ -63,12 +64,18 @@ option{
     color: #000000;
 }
 
+#favoritos{
+    display: flex;
+    align-items: center;
+    
+}
+
 /* NOVO */
 #perfil{
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    background-color: #f7d354;
+    background-color: #ef2602;
     border: 2px solid rgba(247, 211, 84, 0.4);
     transition: opacity 0.2s;
 }

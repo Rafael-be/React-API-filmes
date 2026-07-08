@@ -25,7 +25,7 @@ const Cadastro = () => {
 
     return (
         <div className="cadastro">
-            <h2>Login</h2>
+            <h2>Cadastro</h2>
             {erro && <p className="erro">{erro}</p>}
             <form onSubmit={fazerCadastro}>
                 <input

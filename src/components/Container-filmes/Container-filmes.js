@@ -1,21 +1,45 @@
 import { Link } from "react-router-dom"
-import { Movie, Btn } from "./Style";
+import { Movie, Btn, EstrelaFlutuante, Imagem } from "./Style";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
 import PropTypes from "prop-types";
 
 const imagePath = process.env.REACT_APP_IMAGE_URL;
 
-const ContainerFilmes = ({movie, grid = true}) => {
+const notaParaEstrela = (  { media } ) => {
+    let nota = media / 2;
+    const array = [1, 2, 3, 4, 5];
+
+    return(
+        <span className="estrelas">
+             {array.map((numero) => {
+                if (numero <= Math.floor(nota))
+                    return <FaStar key={numero} color="#f7d354" />;
+                if (numero - nota < 1)
+                    return <FaStarHalfAlt key={numero} color="#f7d354"/>;
+
+                return <FaRegStar key={numero} color="#f7d354"/>;
+            })}
+        </span>
+    );
+};
+
+const ContainerFilmes = ({movie, logado = false}) => {
     return (
         <Movie>
-            <img
-                src={`${imagePath}${movie.poster_path}`}
-                alt={movie.title}
-            />
-            {grid && <span>{movie.title}</span>}
+            <Imagem>
+                <img
+                    src={`${imagePath}${movie.poster_path}`}
+                    alt={movie.title}
+                />
+                <EstrelaFlutuante className={`${movie.title}`}>  </EstrelaFlutuante>
+            </Imagem>
+            {<span>{movie.title}</span>}
 
-            {grid && <Link to={`/movie/${movie.id}`}> <Btn>Detalhes</Btn> </Link>}
-            {/* é um if. Basicamente se grid = true faz isso */}
+            { notaParaEstrela( {media: movie.vote_average} ) }
+
+            {<Link to={`/movie/${movie.id}`}> <Btn>Detalhes</Btn> </Link>}
+            
         </Movie>
     );
 };

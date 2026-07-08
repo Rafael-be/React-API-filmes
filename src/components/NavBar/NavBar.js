@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react";
+import { AiFillStar } from "react-icons/ai";
 import './NavBar.css'
 
 const NavBar = () =>{
@@ -49,7 +50,10 @@ const NavBar = () =>{
         {/* NOVO */}
         <div id="navbar-direita">
             <Link to="/favoritos">
-                <div id="perfil"></div>
+                <div id="favoritos"> <AiFillStar size={30}/> </div>
+            </Link>
+            <Link to="/login">
+                <div id="perfil"/>
             </Link>
         </div>
     </nav>
