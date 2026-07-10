@@ -9,10 +9,12 @@ import Categorias from "./pages/categorias"
 import Pesquisa from "./pages/pesquisa"
 import Login from "./pages/login"
 import Cadastro from "./pages/cadastro"
-// import Favoritos from "./pages/favoritos"
+import Favoritos from "./pages/favoritos"
 
 import { AuthProvider } from "./contexts/AuthContext";
+import { FavoritosProvider } from "./contexts/FavoritosContext";
 import PrivateRoute from "./routes/privateRoutes";
+
 
 import "./global.css";
 
@@ -20,30 +22,31 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
+      <FavoritosProvider>
+        <BrowserRouter>
+          <Routes>
 
-          {/* Está fora do app porque tem layout próprio */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/cadastro" element={<Cadastro />} />
+            {/* Está fora do app porque tem layout próprio */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
 
-          <Route path="/" element={<App />} >
+            <Route path="/" element={<App />} >
 
-            <Route path="/" element={<Home/>} />
-            <Route path="movie/:id" element={<MovieById />} />
-            <Route path="/search" element={<Pesquisa/>} />
-            <Route path="/categoria" element={<Categorias />} />
-            
-            {/* <Route path="/favoritos" element={
-              <PrivateRoute>
-                <Favoritos />
-              </PrivateRoute>
-            }
-            /> */}
+              <Route path="/" element={<Home/>} />
+              <Route path="movie/:id" element={<MovieById />} />
+              <Route path="/search" element={<Pesquisa/>} />
+              <Route path="/categoria" element={<Categorias />} />
+              
+              <Route path="/favoritos" element={
+                <PrivateRoute>
+                  <Favoritos />
+                </PrivateRoute>
+              }/>
 
-          </Route>
-        </Routes>
-      </BrowserRouter>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </FavoritosProvider>
     </AuthProvider>
   </React.StrictMode>
 );

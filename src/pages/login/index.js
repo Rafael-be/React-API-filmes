@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { login } from "../../services/authServices";
 
+import "../cadastroLogin.css";
+
 const Login = () => {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
@@ -25,24 +27,26 @@ const Login = () => {
 
     return (
         <div className="login">
-            <h2>Login</h2>
-            {erro && <p className="erro">{erro}</p>}
-            <form onSubmit={fazerLogin}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="Senha"
-                    value={senha}
-                    onChange={(e) => setSenha(e.target.value)}
-                />
-                <button type="submit">Entrar</button>
-            </form>
-            <p>Não tem conta? <Link to="/cadastro">Cadastre-se</Link></p>
+            <div className="card">
+                <h2>Login</h2>
+                {erro && <p className="erro">{erro}</p>}
+                <form onSubmit={fazerLogin}>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <input
+                        type="password"
+                        placeholder="Senha"
+                        value={senha}
+                        onChange={(e) => setSenha(e.target.value)}
+                    />
+                    <button type="submit">Entrar</button>
+                </form>
+                <p>Não tem conta? <Link to="/cadastro">Cadastre-se</Link></p>
+            </div>
         </div>
     );
 };

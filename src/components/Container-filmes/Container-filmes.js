@@ -32,7 +32,7 @@ const ContainerFilmes = ({movie, logado = false}) => {
                     src={`${imagePath}${movie.poster_path}`}
                     alt={movie.title}
                 />
-                <EstrelaFlutuante className={`${movie.title}`}>  </EstrelaFlutuante>
+                <EstrelaFlutuante className={`${movie.title}`}> <FaRegStar/>  </EstrelaFlutuante>
             </Imagem>
             {<span>{movie.title}</span>}
 

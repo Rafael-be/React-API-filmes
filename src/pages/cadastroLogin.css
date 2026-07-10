@@ -1,7 +1,12 @@
-/* compartilhe esse arquivo entre login e cadastro */
+/* Compartilhado entre Login e Cadastro */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body {
-    margin: 0;
     background: #0f0f0f;
     font-family: "Segoe UI", system-ui, sans-serif;
     color: #f2f2f2;
@@ -11,103 +16,96 @@ body {
 .cadastro {
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
-.login form,
-.cadastro form {
+.card {
+    width: 100%;
+    max-width: 380px;
     background: #1a1a1a;
     border: 1px solid rgba(247, 211, 84, 0.15);
-    border-radius: 1rem;
-    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.card h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.card form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+.card input {
     width: 100%;
-    max-width: 380px;
-    box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.8);
-}
-
-.login h2,
-.cadastro h2 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.02em;
-}
-
-.login input,
-.cadastro input {
+    padding: 0.9rem 1rem;
     background: #242424;
+    color: #fff;
     border: 1px solid #333;
-    border-radius: 0.5rem;
-    padding: 0.75rem 1rem;
-    color: #f2f2f2;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.2s;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color .2s;
 }
 
-.login input:focus,
-.cadastro input:focus {
+.card input:focus {
+    outline: none;
     border-color: #f7d354;
 }
 
-.login button,
-.cadastro button {
+.card button {
+    width: 100%;
+    padding: 0.9rem;
     background: #f7d354;
-    color: #0f0f0f;
+    color: #111;
     border: none;
-    border-radius: 0.5rem;
-    padding: 0.75rem;
+    border-radius: 8px;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: bold;
     cursor: pointer;
-    transition: opacity 0.2s;
-    margin-top: 0.5rem;
+    transition: .2s;
 }
 
-.login button:hover,
-.cadastro button:hover {
-    opacity: 0.85;
+.card button:hover {
+    opacity: .85;
 }
 
-.login p,
-.cadastro p {
-    margin-top: 1.25rem;
-    font-size: 0.9rem;
+.card p {
+    margin-top: 1.5rem;
+    text-align: center;
     color: #b8b8b8;
+    font-size: .95rem;
 }
 
-.login p a,
-.cadastro p a {
+.card a {
     color: #f7d354;
     text-decoration: none;
     font-weight: 600;
 }
 
-.login p a:hover,
-.cadastro p a:hover {
+.card a:hover {
     text-decoration: underline;
 }
 
 .erro {
+    margin-bottom: 1rem;
+    padding: .8rem;
     background: rgba(220, 53, 69, 0.15);
     border: 1px solid rgba(220, 53, 69, 0.4);
-    border-radius: 0.5rem;
-    padding: 0.6rem 1rem;
+    border-radius: 8px;
     color: #ff6b6b;
-    font-size: 0.9rem;
-    max-width: 380px;
     text-align: center;
+    font-size: .9rem;
 }
 
 @media (max-width: 480px) {
-    .login form,
-    .cadastro form {
-        margin: 0 1rem;
-        padding: 2rem 1.25rem;
+    .card {
+        padding: 1.5rem;
     }
 }

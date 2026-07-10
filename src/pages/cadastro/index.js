@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { cadastrar } from "../../services/authServices";
 
+import "../cadastroLogin.css";
+
 const Cadastro = () => {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
@@ -25,24 +27,26 @@ const Cadastro = () => {
 
     return (
         <div className="cadastro">
-            <h2>Cadastro</h2>
-            {erro && <p className="erro">{erro}</p>}
-            <form onSubmit={fazerCadastro}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(resposta) => setEmail(resposta.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="Senha"
-                    value={senha}
-                    onChange={(resposta) => setSenha(resposta.target.value)}
-                />
-                <button type="submit">Entrar</button>
-            </form>
-            <p>Já tem conta? <Link to="/login">Fazer login</Link></p>
+            <div className="card">
+                <h2>Cadastro</h2>
+                {erro && <p className="erro">{erro}</p>}
+                <form onSubmit={fazerCadastro}>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(resposta) => setEmail(resposta.target.value)}
+                    />
+                    <input
+                        type="password"
+                        placeholder="Senha"
+                        value={senha}
+                        onChange={(resposta) => setSenha(resposta.target.value)}
+                    />
+                    <button type="submit">Entrar</button>
+                </form>
+                <p>Já tem conta? <Link to="/login">Fazer login</Link></p>
+            </div>
         </div>
     );
 };
