@@ -21,7 +21,7 @@ export const FavoritosProvider = ({ children }) => {
                 .eq("user_id", usuario.id);
 
             if(data)
-                setIdsFavoritos(data.map(item => item.movie_id));
+                setIdsFavoritos(data.map(item => Number(item.movie_id)));
             else
                 setIdsFavoritos([]);
         };

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import CardIndividual from "../../components/Card-individual/cardIndividual"
+import Comentario from "../../components/Comentario/Comentario";
 
 import { Info, ContainerIndividual, Conteudo } from "../style";
 
@@ -35,6 +36,7 @@ const Movie = () => {
                 <Info>
                     {movie && <CardIndividual key={movie.id} movie = {movie}/>}
                 </Info>
+                {movie && <Comentario/>}
             </Conteudo>
         </ContainerIndividual>
     );

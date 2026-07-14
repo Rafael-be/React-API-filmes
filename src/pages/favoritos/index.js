@@ -18,28 +18,30 @@ const Favoritos = () => {
             return;
         }
 
-        const buscarFilmes = async () => {
+        const buscarFavoritos = async () => {
             const resultados = await Promise.all(
                 idsFavoritos.map((id) =>
-                    fetch(`${URL}movie/${id}?api_key=${KEY}&language=pt-BR`)
+                    fetch(`${URL}${id}?api_key=${KEY}&language=pt-BR`)
                         .then(res => res.json())
                 )
             );
             setFavoritos(resultados);
         };
 
-        buscarFilmes();
+        buscarFavoritos();
     }, [idsFavoritos, KEY, URL]);
 
 
     return (
         <Container>
 
-        <h1> <span> FAVORITOS </span> </h1>     
-
-        <MovieList>
-            {favoritos.map((movie) => (<ContainerFilmes key={movie.id} movie={movie}/>))}
-        </MovieList>       
+            <h1> <span> FAVORITOS </span> </h1>     
+            {favoritos.length === 0 && <h1> Nenhum favorito encontrado </h1>}
+            {favoritos.length > 0 &&
+                <MovieList>
+                    {favoritos.map((movie) => (<ContainerFilmes key={movie.id} movie={movie}/>))}
+                </MovieList>
+            }       
 
         </Container>
     );

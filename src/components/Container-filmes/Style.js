@@ -22,14 +22,31 @@ export const EstrelaFlutuante = styled.div`
     position: absolute;
     top: 1.15rem;
     right: 1.89rem;
-
     opacity: 0;
     transition: opacity 0.3s ease;
+    cursor: pointer;
 
-    &:hover{
+    &:hover {
         opacity: 0.8;
-        transform: translateY(-2px) scale(1.02);
-        cursor: pointer;
+        transform: translateY(-2px) scale(1.01);
+    }
+
+    svg {
+        transition: transform 0.2s ease;
+    }
+
+    svg:hover {
+        transform: scale(1.07);
+    }
+
+    svg:active {
+        animation: pulso 0.3s ease;
+    }
+
+    @keyframes pulso {
+        0%   { transform: scale(1); }
+        50%  { transform: scale(1.2); }
+        100% { transform: scale(1); }
     }
 `;
 

@@ -37,12 +37,12 @@ const ContainerFilmes = ({movie, logado = false}) => {
     const favoritar = async ( { id } ) => {
         if(!usuario) return;
         await adicionarFavorito(usuario.id, id);
-        setIdsFavoritos([...idsFavoritos, id])
+        setIdsFavoritos([...idsFavoritos, Number(id)])
     }
     const desFavoritar = async ( { id } ) => {
         if(!usuario) return;
         await removerFavorito(usuario.id, id);
-        setIdsFavoritos.filter(idFavorito => idFavorito !== id);
+        setIdsFavoritos(idsFavoritos.filter(idFavorito => idFavorito !== id));
     }
 
     return (
