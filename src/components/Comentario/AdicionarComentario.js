@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { adicionarComentario } from "../../services/comentarioService";
 
+import { ContainerForm, Form, TextArea, AcoesForm, SelectLabel, BotaoEnviar } from './Style'; // Ajuste o caminho até o seu arquivo styles.js
+
 const AdicionarComentario = ({ movieId, onComentarioAdicionado }) => {
 
     const { usuario } = useAuth();
@@ -36,31 +38,36 @@ const AdicionarComentario = ({ movieId, onComentarioAdicionado }) => {
     };
 
     return (
-        <div>
+        <ContainerForm>
             <h3>Deixe seu comentário</h3>
             {erro && <p className="erro">{erro}</p>}
-            <form onSubmit={handleEnviar}>
-                <textarea
-                    placeholder="Escreva seu comentário..."
-                    value={texto}
-                    onChange={(e) => setTexto(e.target.value)}
-                />
-                <label>
-                    Nota:
-                    <select
-                        value={nota}
-                        onChange={(e) => setNota(Number(e.target.value))}
-                    >
-                        {[1,2,3,4,5,6,7,8,9,10].map((n) => (
-                            <option key={n} value={n}>{n}</option>
-                        ))}
-                    </select>
-                </label>
-                <button type="submit" disabled={carregando}>
-                    {carregando ? "Enviando..." : "Comentar"}
-                </button>
-            </form>
-        </div>
+            
+            <Form onSubmit={handleEnviar}>
+            <TextArea
+                placeholder="Escreva seu comentário..."
+                value={texto}
+                onChange={(e) => setTexto(e.target.value)}
+            />
+            
+            <AcoesForm>
+                <SelectLabel>
+                Nota:
+                <select
+                    value={nota}
+                    onChange={(e) => setNota(Number(e.target.value))}
+                >
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                    <option key={n} value={n}>★ {n}</option>
+                    ))}
+                </select>
+                </SelectLabel>
+
+                <BotaoEnviar type="submit" disabled={carregando}>
+                {carregando ? "Enviando..." : "Comentar"}
+                </BotaoEnviar>
+            </AcoesForm>
+            </Form>
+        </ContainerForm>
     );
 };
 

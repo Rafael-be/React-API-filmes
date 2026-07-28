@@ -4,27 +4,28 @@ import { useParams } from "react-router-dom";
 import CardIndividual from "../../components/Card-individual/cardIndividual"
 import Comentario from "../../components/Comentario/Comentario";
 import AdicionarComentario from "../../components/Comentario/AdicionarComentario";
-import { buscarComentarios } from "../../services/comentarioService";
+import { useAuth } from "../../contexts/AuthContext";
+import { buscarComentarioPorUsuarioEFilme } from "../../services/comentarioService";
 
 import { Info, ContainerIndividual, Conteudo, SecaoComentarios } from "../style";
 
 const Movie = () => {
     const { id } = useParams();
+    const { usuario } = useAuth();
 
     const KEY = process.env.REACT_APP_KEY;
     const URL = process.env.REACT_APP_URL;
 
-    const [comentarios, setComentarios] = useState([
-        { id: 1, user_id: "teste", nota: 10, texto: "Teste", created_at: new Date() }
-    ]);
+    const [comentarios, setComentarios] = useState(null);
     const [movie, setMovie] = useState(null);
 
     const recarregarComentarios = async () => {
-        const { data } = await buscarComentarios(id);
+        if(!usuario) return;
+        const { data } = await buscarComentarioPorUsuarioEFilme(usuario.id, id);
         if (data) setComentarios(data);
     };
     
-    const obterFilmesPopulares = async (urlParaFetch) => {
+    const obterFilmePorId = async (urlParaFetch) => {
         const res = await fetch(urlParaFetch);
         const dados = await res.json();
         setMovie(dados);
@@ -34,10 +35,11 @@ const Movie = () => {
     useEffect(() => {
         const carregarFilme = async () => {
             const urlParaFetch = `${URL}${id}?api_key=${KEY}&language=pt-BR`;
-            let filmeEncontrado = await obterFilmesPopulares(urlParaFetch)
+            let filmeEncontrado = await obterFilmePorId(urlParaFetch);
             setMovie(filmeEncontrado);
         }
         carregarFilme();
+        recarregarComentarios();
     }, [KEY, URL, id]);
 
     return (
@@ -48,10 +50,15 @@ const Movie = () => {
                 </Info>
                 
                 <SecaoComentarios>
-                    <h2>Avaliações dos Usuários</h2>
-                    {comentarios.map((comentario) => (
-                        <Comentario key={comentario.id} comentario={comentario} />
-                    ))}
+                    {comentarios &&
+                        <Comentario comentario={comentarios}/>
+                    }
+                    {!comentarios &&    
+                        <AdicionarComentario 
+                            movieId={Number(id)} 
+                            onComentarioAdicionado= {recarregarComentarios}  
+                        />
+                    }
                 </SecaoComentarios>
             </Conteudo>
         </ContainerIndividual>
