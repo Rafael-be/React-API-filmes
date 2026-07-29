@@ -10,6 +10,7 @@ import Pesquisa from "./pages/pesquisa"
 import Login from "./pages/login"
 import Cadastro from "./pages/cadastro"
 import Favoritos from "./pages/favoritos"
+import Comentarios from "./pages/comentarios"
 
 import { AuthProvider } from "./contexts/AuthContext";
 import { FavoritosProvider } from "./contexts/FavoritosContext";
@@ -40,6 +41,12 @@ root.render(
               <Route path="/favoritos" element={
                 <PrivateRoute>
                   <Favoritos />
+                </PrivateRoute>
+              }/>
+
+              <Route path="/comentarios" element={
+                <PrivateRoute>
+                  <Comentarios/>
                 </PrivateRoute>
               }/>
 

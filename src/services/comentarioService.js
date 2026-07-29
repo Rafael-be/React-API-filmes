@@ -21,6 +21,14 @@ export const buscarComentarioPorUsuarioEFilme = async (userId, movieId) => {
     return { data, error };
 };
 
+export const buscarComentarioPorUsuario = async (userId) => {
+    const { data, error } = await supabase
+        .from("comentarios")
+        .select("id, texto, nota, created_at, user_id, movie_id")
+        .eq("user_id", userId)
+    return { data, error };
+};
+
 export const adicionarComentario = async (userId, movieId, texto, nota) => {
     const { data, error } = await supabase
         .from("comentarios")

@@ -1,0 +1,124 @@
+.meus-comentarios {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    color: #FFFFFF;
+}
+
+.meus-comentarios-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #2A2A2A;
+}
+
+.meus-comentarios-header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.btn-toggle {
+    background: transparent;
+    border: 1px solid #F3FD6B;
+    color: #F3FD6B;
+    padding: 0.5rem 1.25rem;
+    border-radius: 2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-toggle:hover {
+    background: #F3FD6B;
+    color: #000000;
+}
+
+.lista-comentarios {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.card-comentario {
+    display: flex;
+    gap: 1.25rem;
+    background: #141414;
+    border: 1px solid #2A2A2A;
+    border-radius: 1rem;
+    padding: 1.25rem;
+    position: relative;
+    transition: border-color 0.2s;
+}
+
+.card-comentario:hover {
+    border-color: #F3FD6B;
+}
+
+.card-comentario img {
+    width: 80px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    flex-shrink: 0;
+}
+
+.card-comentario-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.card-comentario-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.card-comentario-topo h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+.card-comentario-nota {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+    color: #F7D354;
+}
+
+.card-comentario-texto {
+    font-size: 0.95rem;
+    color: #B3B3B3;
+    line-height: 1.5;
+}
+
+.card-comentario-data {
+    position: absolute;
+    bottom: 1rem;
+    right: 1.25rem;
+    font-size: 0.78rem;
+    color: #666666;
+}
+
+@media (max-width: 600px) {
+    .card-comentario img {
+        width: 60px;
+        height: 90px;
+    }
+
+    .card-comentario-topo {
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .meus-comentarios-header h1 {
+        font-size: 1.35rem;
+    }
+}
