@@ -37,9 +37,14 @@ const Comentarios = () => {
         <div className="meus-comentarios">
             <div className="meus-comentarios-header">
                 <h1>Meus Comentários</h1>
-                <button className="btn-toggle" onClick={() => setPublica(!publica)}>
-                    {publica ? "🔓 Pública" : "🔒 Privada"}
-                </button>
+                <label className="toggle">
+                    <input 
+                        type="checkbox" 
+                        checked={publica} 
+                        onChange={() => setPublica(!publica)} 
+                    />
+                    <span className="slider"></span>
+                </label>    
             </div>
 
             <div className="lista-comentarios">
