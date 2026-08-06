@@ -3,6 +3,7 @@ import { Container, Header, Body, Footer } from './Style';
 const Comentario = ({comentario}) => {
     const nomeAutor = comentario?.perfis?.nome
         || comentario?.nome
+        || comentario?.user?.nome
         || `Usuário ${comentario?.user_id?.slice(0, 8) || ""}`;
 
     return (

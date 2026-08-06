@@ -63,6 +63,26 @@ export const buscarComentarioPorUsuario = async (userId) => {
     return { data, error };
 };
 
+export const buscarComentariosPorUsuarioId = async (userId) => {
+    const { data, error } = await supabase
+        .from("comentarios")
+        .select("id, texto, nota, created_at, user_id, movie_id, title, poster_path")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
+
+    if (error && isSchemaError(error)) {
+        const fallback = await supabase
+            .from("comentarios")
+            .select("id, texto, nota, created_at, user_id, movie_id")
+            .eq("user_id", userId)
+            .order("created_at", { ascending: false });
+
+        return { data: fallback.data, error: fallback.error };
+    }
+
+    return { data, error };
+};
+
 export const adicionarComentario = async (userId, movieId, texto, nota, title, posterPath) => {
     const payload = { user_id: userId, movie_id: movieId, texto, nota };
 

@@ -1,55 +1,150 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { buscarComentarioPorUsuario } from "../../services/comentarioService"
+import { buscarComentarioPorUsuario, buscarComentariosPorUsuarioId } from "../../services/comentarioService";
+import { buscarPerfilPorSlug, buscarMeuPerfil, atualizarVisibilidade } from "../../services/perfilService";
 
-import "./comentarios.css"
+import "./comentarios.css";
 
 const Comentarios = () => {
-    const { usuario } = useAuth();
+    const { slug } = useParams();
+    const navigate = useNavigate();
+    const { usuario, carregando } = useAuth();
     const [comentarios, setComentarios] = useState([]);
-    const [publica, setPublica] = useState(false);
+    const [perfil, setPerfil] = useState(null);
+    const [carregandoDados, setCarregandoDados] = useState(true);
+    const [erro, setErro] = useState("");
 
     const URL = process.env.REACT_APP_URL;
     const KEY = process.env.REACT_APP_KEY;
     const imagePath = process.env.REACT_APP_IMAGE_URL;
 
-    useEffect(() => {
-        if (!usuario) return;
+    const ehDono = Boolean(usuario && perfil && usuario.id === perfil.id);
 
-        const carregar = async () => {
-            const { data } = await buscarComentarioPorUsuario(usuario.id);
-            if (!data) return;
+    const enriquecerComentarios = useCallback(async (lista) => {
+        if (!lista?.length) return [];
 
-            const comDetalhes = await Promise.all(
-                data.map(async (comentario) => {
-                    if (comentario.title && comentario.poster_path) {
-                        return comentario;
-                    }
+        const comDetalhes = await Promise.all(
+            lista.map(async (comentario) => {
+                if (comentario.title && comentario.poster_path) {
+                    return comentario;
+                }
 
+                try {
                     const res = await fetch(`${URL}${comentario.movie_id}?api_key=${KEY}&language=pt-BR`);
                     const filme = await res.json();
                     return { ...comentario, poster_path: filme.poster_path, title: filme.title };
-                })
-            );
+                } catch {
+                    return comentario;
+                }
+            })
+        );
+
+        return comDetalhes;
+    }, [KEY, URL]);
+
+    useEffect(() => {
+        const carregar = async () => {
+            setCarregandoDados(true);
+            setErro("");
+
+            if (slug) {
+                const { data: perfilEncontrado, error } = await buscarPerfilPorSlug(slug);
+
+                if (error || !perfilEncontrado) {
+                    setErro("Este perfil não existe ou não está disponível.");
+                    setPerfil(null);
+                    setComentarios([]);
+                    setCarregandoDados(false);
+                    return;
+                }
+
+                setPerfil(perfilEncontrado);
+
+                const ehDonoVisitante = Boolean(usuario && usuario.id === perfilEncontrado.id);
+                if (!perfilEncontrado.lista_publica && !ehDonoVisitante) {
+                    setComentarios([]);
+                    setCarregandoDados(false);
+                    return;
+                }
+
+                const { data } = await buscarComentariosPorUsuarioId(perfilEncontrado.id);
+                const comDetalhes = await enriquecerComentarios(data || []);
+                setComentarios(comDetalhes);
+                setCarregandoDados(false);
+                return;
+            }
+
+            if (!usuario) {
+                navigate("/login", { replace: true });
+                setCarregandoDados(false);
+                return;
+            }
+
+            const { data: meuPerfil } = await buscarMeuPerfil(usuario.id);
+            setPerfil(meuPerfil);
+
+            const { data } = await buscarComentarioPorUsuario(usuario.id);
+            const comDetalhes = await enriquecerComentarios(data || []);
             setComentarios(comDetalhes);
+            setCarregandoDados(false);
         };
 
-        carregar();
-    }, [usuario, URL, KEY]);
+        if (!carregando) {
+            carregar();
+        }
+    }, [carregando, enriquecerComentarios, navigate, slug, usuario]);
 
-    return(
+    const handleToggle = async () => {
+        if (!usuario || !perfil) return;
+
+        const novoValor = !perfil.lista_publica;
+        setPerfil({ ...perfil, lista_publica: novoValor });
+        await atualizarVisibilidade(usuario.id, novoValor);
+    };
+
+    if (carregando) {
+        return <div className="meus-comentarios carregando">Carregando...</div>;
+    }
+
+    return (
         <div className="meus-comentarios">
             <div className="meus-comentarios-header">
-                <h1>Meus Comentários</h1>
-                <label className="toggle">
-                    <input 
-                        type="checkbox" 
-                        checked={publica} 
-                        onChange={() => setPublica(!publica)} 
-                    />
-                    <span className="slider"></span>
-                </label>    
+                <div>
+                    <h1>{ehDono ? "Meus Comentários" : (perfil?.nome ? `Comentários de ${perfil.nome}` : "Comentários")}</h1>
+                    {ehDono && (
+                        <div className="toggle-info" role="note">
+                            <span className="toggle-info-icon" aria-hidden="true">🔒</span>
+                            <span>Esse botão controla se sua lista de comentários fica pública ou privada para outras pessoas.</span>
+                        </div>
+                    )}
+                </div>
+
+                {ehDono && (
+                    <label className="toggle-wrapper" htmlFor="visibilidade-lista">
+                        <span className="toggle-label">{perfil?.lista_publica ? "Público" : "Privado"}</span>
+                        <span className="toggle">
+                            <input
+                                id="visibilidade-lista"
+                                type="checkbox"
+                                checked={Boolean(perfil?.lista_publica)}
+                                onChange={handleToggle}
+                            />
+                            <span className="slider"></span>
+                        </span>
+                    </label>
+                )}
             </div>
+
+            {erro && <p className="mensagem-estado">{erro}</p>}
+
+            {!erro && !comentarios.length && !carregandoDados && (
+                <p className="mensagem-estado">
+                    {slug
+                        ? "Esta lista de comentários está privada ou ainda não possui comentários."
+                        : "Você ainda não possui comentários."}
+                </p>
+            )}
 
             <div className="lista-comentarios">
                 {comentarios.map((comentario) => (
