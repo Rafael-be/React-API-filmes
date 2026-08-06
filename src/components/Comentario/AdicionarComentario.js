@@ -4,7 +4,7 @@ import { adicionarComentario } from "../../services/comentarioService";
 
 import { ContainerForm, Form, TextArea, AcoesForm, SelectLabel, BotaoEnviar } from './Style'; // Ajuste o caminho até o seu arquivo styles.js
 
-const AdicionarComentario = ({ movieId, onComentarioAdicionado }) => {
+const AdicionarComentario = ({ movieId, title, posterPath, onComentarioAdicionado }) => {
 
     const { usuario } = useAuth();
     const [texto, setTexto] = useState("");
@@ -24,7 +24,7 @@ const AdicionarComentario = ({ movieId, onComentarioAdicionado }) => {
         }
 
         setCarregando(true);
-        const { error } = await adicionarComentario(usuario.id, movieId, texto, nota);
+        const { error } = await adicionarComentario(usuario.id, movieId, texto, nota, title, posterPath);
         setCarregando(false);
 
         if (error) {

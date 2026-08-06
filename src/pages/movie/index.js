@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 
-import CardIndividual from "../../components/Card-individual/cardIndividual"
+import CardIndividual from "../../components/Card-individual/cardIndividual";
 import Comentario from "../../components/Comentario/Comentario";
 import AdicionarComentario from "../../components/Comentario/AdicionarComentario";
 import { useAuth } from "../../contexts/AuthContext";
 import { buscarComentarioPorUsuarioEFilme } from "../../services/comentarioService";
+import { obterFilmePorId, buscarKeywords, buscarDiretor, buscarElenco } from "../../services/movieService";
 
 import { Info, ContainerIndividual, Conteudo, SecaoComentarios } from "../style";
 
@@ -13,40 +14,52 @@ const Movie = () => {
     const { id } = useParams();
     const { usuario } = useAuth();
 
-    const KEY = process.env.REACT_APP_KEY;
-    const URL = process.env.REACT_APP_URL;
+
 
     const [comentarios, setComentarios] = useState(null);
     const [movie, setMovie] = useState(null);
+    const [keywords, setKeywords] = useState([]);
+    const [diretor, setDiretor] = useState(null);
+    const [elenco, setElenco] = useState([]);
 
-    const recarregarComentarios = async () => {
-        if(!usuario) return;
-        const { data } = await buscarComentarioPorUsuarioEFilme(usuario.id, id);
-        if (data) setComentarios(data);
-    };
-    
-    const obterFilmePorId = async (urlParaFetch) => {
-        const res = await fetch(urlParaFetch);
-        const dados = await res.json();
-        setMovie(dados);
-        return dados;
-    }
+    const recarregarComentarios = useCallback(async () => {
+        if (!usuario) return;
+        const { data } = await buscarComentarioPorUsuarioEFilme(usuario.id, Number(id));
+        setComentarios(data);
+    }, [id, usuario]);
 
     useEffect(() => {
         const carregarFilme = async () => {
-            const urlParaFetch = `${URL}${id}?api_key=${KEY}&language=pt-BR`;
-            let filmeEncontrado = await obterFilmePorId(urlParaFetch);
-            setMovie(filmeEncontrado);
-        }
+            const [filmeRes, keywordsRes, diretorRes, elencoRes] = await Promise.all([
+                obterFilmePorId(id),
+                buscarKeywords(id),
+                buscarDiretor(id),
+                buscarElenco(id)
+            ]);
+
+            setMovie(filmeRes);
+            setKeywords(keywordsRes);
+            setDiretor(diretorRes);
+            setElenco(elencoRes);
+        };
+
         carregarFilme();
         recarregarComentarios();
-    }, [KEY, URL, id]);
+    }, [id, recarregarComentarios]);
 
     return (
         <ContainerIndividual>
             <Conteudo>
                 <Info>
-                    {movie && <CardIndividual key={movie.id} movie={movie} />}
+                    {movie && (
+                        <CardIndividual
+                            key={movie.id}
+                            movie={movie}
+                            diretor={diretor}
+                            keywords={keywords}
+                            elenco={elenco}
+                        />
+                    )}
                 </Info>
                 
                 <SecaoComentarios>
@@ -55,8 +68,10 @@ const Movie = () => {
                     }
                     {!comentarios &&    
                         <AdicionarComentario 
-                            movieId={Number(id)} 
-                            onComentarioAdicionado= {recarregarComentarios}  
+                            movieId={Number(id)}
+                            title={movie?.title}
+                            posterPath={movie?.poster_path}
+                            onComentarioAdicionado={recarregarComentarios}  
                         />
                     }
                 </SecaoComentarios>

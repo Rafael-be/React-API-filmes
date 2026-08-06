@@ -22,6 +22,10 @@ const Comentarios = () => {
 
             const comDetalhes = await Promise.all(
                 data.map(async (comentario) => {
+                    if (comentario.title && comentario.poster_path) {
+                        return comentario;
+                    }
+
                     const res = await fetch(`${URL}${comentario.movie_id}?api_key=${KEY}&language=pt-BR`);
                     const filme = await res.json();
                     return { ...comentario, poster_path: filme.poster_path, title: filme.title };
@@ -31,7 +35,7 @@ const Comentarios = () => {
         };
 
         carregar();
-    }, [usuario]);
+    }, [usuario, URL, KEY]);
 
     return(
         <div className="meus-comentarios">
@@ -52,11 +56,11 @@ const Comentarios = () => {
                     <div key={comentario.id} className="card-comentario">
                         <img
                             src={`${imagePath}${comentario.poster_path}`}
-                            alt={comentario.movie_id}
+                            alt={comentario.title || comentario.movie_id}
                         />
                         <div className="card-comentario-conteudo">
                             <div className="card-comentario-topo">
-                                <h3>{comentario.movie_id}</h3>
+                                <h3>{comentario.title || comentario.movie_id}</h3>
                                 <span className="card-comentario-nota">
                                     {comentario.nota}/10
                                 </span>

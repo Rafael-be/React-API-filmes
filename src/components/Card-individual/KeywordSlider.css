@@ -1,0 +1,95 @@
+.keyword-slider-container {
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.keyword-slider-container h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #f9df84;
+  margin-bottom: 0.75rem;
+  text-align: left;
+}
+
+.slider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.slider-track {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  padding: 0.25rem 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  scroll-snap-type: x proximity;
+}
+
+.slider-track::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+.keyword-tag {
+  background: rgba(255, 208, 68, 0.16);
+  color: #ffe9a3;
+  border: 1px solid rgba(255, 208, 68, 0.38);
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  transition: all 0.2s ease;
+}
+
+.keyword-tag:hover {
+  background: rgba(247, 211, 84, 0.2);
+  border-color: #f7d354;
+}
+
+.slider-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f7f7f7;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: static;
+  z-index: 2;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+}
+
+.slider-btn:hover:not(:disabled) {
+  background: #f7d354;
+  color: #121212;
+}
+
+.slider-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .slider-btn {
+    display: none; /* No mobile, swipe nativo é melhor */
+  }
+}

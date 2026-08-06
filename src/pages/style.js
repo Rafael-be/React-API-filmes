@@ -37,7 +37,7 @@ export const Conteudo = styled.div`
   align-items: center; /* Centraliza o card do filme e os comentários horizontalmente */
   gap: 3rem;           /* Espaçamento confortável entre o filme e as avaliações */
   width: 100%;
-  max-width: 700px;    /* Largura ideal para leitura, impedindo que o layout estique no PC */
+  max-width: 1000px;    /* Largura ajustada para suportar o novo Card Individual horizontal */
 `;
 
 // Área do Card do Filme
