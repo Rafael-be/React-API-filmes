@@ -1,12 +1,31 @@
 import { Link, useNavigate } from "react-router-dom"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { FaComments } from "react-icons/fa";
 import './NavBar.css'
+import { useAuth } from "../../contexts/AuthContext";
+import { buscarMeuPerfil } from "../../services/perfilService";
 
 const NavBar = () =>{
     const [pesquisa, setPesquisa] = useState("");
     const navigate = useNavigate();
+    const { usuario } = useAuth();
+    const [perfilSlug, setPerfilSlug] = useState(null);
+
+    useEffect(() => {
+        let mounted = true;
+        if (!usuario) {
+            setPerfilSlug(null);
+            return;
+        }
+
+        (async () => {
+            const { data } = await buscarMeuPerfil(usuario.id);
+            if (mounted && data) setPerfilSlug(data.slug);
+        })();
+
+        return () => { mounted = false; };
+    }, [usuario]);
 
 
     const preencherSubmit = (busca) => {
@@ -24,7 +43,9 @@ const NavBar = () =>{
         navigate(`/categoria?nome=${valor}`, { replace: true });
     };
 
-   return (
+    const comentariosLink = usuario ? (perfilSlug ? `/comentarios/${perfilSlug}` : "/comentarios") : "/login";
+
+    return (
     <nav id="navbar">
         <div id="navbar-esquerda">
             <h2>
@@ -53,7 +74,7 @@ const NavBar = () =>{
             <Link to="/favoritos">
                 <div id="favoritos"> <AiFillStar size={30}/> </div>
             </Link>
-            <Link to="/comentarios">
+            <Link to={comentariosLink}>
                 <FaComments size={22} color="#F3FD6B" />
             </Link>
             <Link to="/login">

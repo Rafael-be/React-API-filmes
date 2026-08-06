@@ -44,7 +44,8 @@ root.render(
                 </PrivateRoute>
               }/>
 
-              <Route path="/comentarios/:slug?" element={<Comentarios />} />
+              <Route path="comentarios" element={<Comentarios />} />
+              <Route path="comentarios/:slug" element={<Comentarios />} />
 
             </Route>
           </Routes>

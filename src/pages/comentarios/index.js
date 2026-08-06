@@ -48,46 +48,57 @@ const Comentarios = () => {
             setCarregandoDados(true);
             setErro("");
 
-            if (slug) {
-                const { data: perfilEncontrado, error } = await buscarPerfilPorSlug(slug);
+            try {
+                if (slug) {
+                    const { data: perfilEncontrado, error } = await buscarPerfilPorSlug(slug);
 
-                if (error || !perfilEncontrado) {
-                    setErro("Este perfil não existe ou não está disponível.");
-                    setPerfil(null);
-                    setComentarios([]);
+                    if (error || !perfilEncontrado) {
+                        setErro("Este perfil não existe ou não está disponível.");
+                        setPerfil(null);
+                        setComentarios([]);
+                        setCarregandoDados(false);
+                        return;
+                    }
+
+                    setPerfil(perfilEncontrado);
+
+                    const ehDonoVisitante = Boolean(usuario && usuario.id === perfilEncontrado.id);
+                    if (!perfilEncontrado.lista_publica && !ehDonoVisitante) {
+                        setComentarios([]);
+                        setCarregandoDados(false);
+                        return;
+                    }
+
+                    const { data } = await buscarComentariosPorUsuarioId(perfilEncontrado.id);
+                    const comDetalhes = await enriquecerComentarios(data || []);
+                    setComentarios(comDetalhes);
                     setCarregandoDados(false);
                     return;
                 }
 
-                setPerfil(perfilEncontrado);
-
-                const ehDonoVisitante = Boolean(usuario && usuario.id === perfilEncontrado.id);
-                if (!perfilEncontrado.lista_publica && !ehDonoVisitante) {
-                    setComentarios([]);
+                if (!usuario) {
+                    navigate("/login", { replace: true });
                     setCarregandoDados(false);
                     return;
                 }
 
-                const { data } = await buscarComentariosPorUsuarioId(perfilEncontrado.id);
+                const { data: meuPerfil } = await buscarMeuPerfil(usuario.id);
+                setPerfil(meuPerfil);
+
+                const { data } = await buscarComentarioPorUsuario(usuario.id);
                 const comDetalhes = await enriquecerComentarios(data || []);
                 setComentarios(comDetalhes);
                 setCarregandoDados(false);
-                return;
-            }
-
-            if (!usuario) {
-                navigate("/login", { replace: true });
+            } catch (err) {
+                // captura qualquer erro inesperado para evitar que a UI quebre
+                // e mostra uma mensagem amigável ao usuário
+                // eslint-disable-next-line no-console
+                console.error("Erro ao carregar comentários:", err);
+                setErro("Ocorreu um erro ao carregar os comentários. Tente novamente mais tarde.");
+                setPerfil(null);
+                setComentarios([]);
                 setCarregandoDados(false);
-                return;
             }
-
-            const { data: meuPerfil } = await buscarMeuPerfil(usuario.id);
-            setPerfil(meuPerfil);
-
-            const { data } = await buscarComentarioPorUsuario(usuario.id);
-            const comDetalhes = await enriquecerComentarios(data || []);
-            setComentarios(comDetalhes);
-            setCarregandoDados(false);
         };
 
         if (!carregando) {
@@ -107,11 +118,13 @@ const Comentarios = () => {
         return <div className="meus-comentarios carregando">Carregando...</div>;
     }
 
+    const titulo = ehDono ? "Meus Comentários" : (perfil?.nome ? `Comentários de ${perfil.nome}` : "Comentários");
+
     return (
         <div className="meus-comentarios">
             <div className="meus-comentarios-header">
                 <div>
-                    <h1>{ehDono ? "Meus Comentários" : (perfil?.nome ? `Comentários de ${perfil.nome}` : "Comentários")}</h1>
+                    <h1>{titulo}</h1>
                     {ehDono && (
                         <div className="toggle-info" role="note">
                             <span className="toggle-info-icon" aria-hidden="true">🔒</span>

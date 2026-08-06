@@ -5,7 +5,7 @@ import CardIndividual from "../../components/Card-individual/cardIndividual";
 import Comentario from "../../components/Comentario/Comentario";
 import AdicionarComentario from "../../components/Comentario/AdicionarComentario";
 import { useAuth } from "../../contexts/AuthContext";
-import { buscarComentarioPorUsuarioEFilme } from "../../services/comentarioService";
+import { buscarComentarioPorUsuarioEFilme, buscarComentarios } from "../../services/comentarioService";
 import { obterFilmePorId, buscarKeywords, buscarDiretor, buscarElenco } from "../../services/movieService";
 
 import { Info, ContainerIndividual, Conteudo, SecaoComentarios } from "../style";
@@ -16,16 +16,24 @@ const Movie = () => {
 
 
 
-    const [comentarios, setComentarios] = useState(null);
+    const [comentariosLista, setComentariosLista] = useState([]);
+    const [comentarioUsuario, setComentarioUsuario] = useState(null);
     const [movie, setMovie] = useState(null);
     const [keywords, setKeywords] = useState([]);
     const [diretor, setDiretor] = useState(null);
     const [elenco, setElenco] = useState([]);
 
     const recarregarComentarios = useCallback(async () => {
-        if (!usuario) return;
+        const lista = await buscarComentarios(Number(id));
+        setComentariosLista(lista.data || []);
+
+        if (!usuario) {
+            setComentarioUsuario(null);
+            return;
+        }
+
         const { data } = await buscarComentarioPorUsuarioEFilme(usuario.id, Number(id));
-        setComentarios(data);
+        setComentarioUsuario(data);
     }, [id, usuario]);
 
     useEffect(() => {
@@ -63,17 +71,22 @@ const Movie = () => {
                 </Info>
                 
                 <SecaoComentarios>
-                    {comentarios &&
-                        <Comentario comentario={comentarios}/>
-                    }
-                    {!comentarios &&    
-                        <AdicionarComentario 
+                    {comentariosLista.length > 0 ? (
+                        comentariosLista.map((c) => (
+                            <Comentario key={c.id} comentario={c} />
+                        ))
+                    ) : (
+                        <p>Ainda não há comentários para este filme.</p>
+                    )}
+
+                    {usuario && !comentarioUsuario && (
+                        <AdicionarComentario
                             movieId={Number(id)}
                             title={movie?.title}
                             posterPath={movie?.poster_path}
-                            onComentarioAdicionado={recarregarComentarios}  
+                            onComentarioAdicionado={recarregarComentarios}
                         />
-                    }
+                    )}
                 </SecaoComentarios>
             </Conteudo>
         </ContainerIndividual>
