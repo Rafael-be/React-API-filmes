@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useModalAuth } from "../../contexts/ModalAuthContext";
 import { cadastrar } from "../../services/authServices";
 
 import "../cadastroLogin.css";
@@ -9,8 +9,7 @@ const Cadastro = () => {
     const [senha, setSenha] = useState("");
     const [nome, setNome] = useState("");
     const [erro, setErro] = useState(null);
-
-    const navigate = useNavigate();
+    const { fecharModal, abrirLogin } = useModalAuth();
 
     const fazerCadastro = async (evento) => {
         evento.preventDefault();
@@ -23,7 +22,7 @@ const Cadastro = () => {
             return;
         }
 
-        navigate("/");
+        fecharModal();
     };
 
     return (
@@ -52,7 +51,10 @@ const Cadastro = () => {
                     />
                     <button type="submit">Entrar</button>
                 </form>
-                <p>Já tem conta? <Link to="/login">Fazer login</Link></p>
+                <p>
+                    Já tem conta?{' '}
+                    <button type="button" className="link-botao" onClick={abrirLogin}>clique aqui</button>
+                </p>
             </div>
         </div>
     );

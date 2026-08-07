@@ -1,35 +1,20 @@
-import { Link, useNavigate } from "react-router-dom"
-import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { FaComments } from "react-icons/fa";
-import './NavBar.css'
+import './NavBar.css';
 import { useAuth } from "../../contexts/AuthContext";
-import { buscarMeuPerfil } from "../../services/perfilService";
+import { useModalAuth } from "../../contexts/ModalAuthContext";
+import AvatarUsuario from "../AvatarUsuario";
 
-const NavBar = () =>{
+const NavBar = () => {
     const [pesquisa, setPesquisa] = useState("");
     const navigate = useNavigate();
-    const { usuario } = useAuth();
-    const [perfilSlug, setPerfilSlug] = useState(null);
-
-    useEffect(() => {
-        let mounted = true;
-        if (!usuario) {
-            setPerfilSlug(null);
-            return;
-        }
-
-        (async () => {
-            const { data } = await buscarMeuPerfil(usuario.id);
-            if (mounted && data) setPerfilSlug(data.slug);
-        })();
-
-        return () => { mounted = false; };
-    }, [usuario]);
-
+    const { usuario, perfil } = useAuth();
+    const { abrirLogin } = useModalAuth();
 
     const preencherSubmit = (busca) => {
-        busca.preventDefault(); //previne o comportamente padrão da página: dar reaload ao enviar forms
+        busca.preventDefault();
 
         if (!pesquisa) return;
 
@@ -43,46 +28,52 @@ const NavBar = () =>{
         navigate(`/categoria?nome=${valor}`, { replace: true });
     };
 
-    const comentariosLink = usuario ? (perfilSlug ? `/comentarios/${perfilSlug}` : "/comentarios") : "/login";
+    const comentariosLink = usuario ? (perfil?.slug ? `/comentarios/${perfil.slug}` : "/comentarios") : "#";
 
     return (
-    <nav id="navbar">
-        <div id="navbar-esquerda">
-            <h2>
-                <Link to="/"> Biblioteca de filmes </Link>
-            </h2>
+        <nav id="navbar">
+            <div id="navbar-esquerda">
+                <h2>
+                    <Link to="/"> Biblioteca de filmes </Link>
+                </h2>
 
-            <select onChange={selecaoCategoria} defaultValue={""}>
-                <option value="" disabled>Selecionar categoria</option>
-                <option value="top_rated">Melhores avaliados</option>
-                <option value="now_playing">Últimos lançamentos</option>
-                <option value="upcoming">Próximos lançamentos</option>
-            </select>
+                <select onChange={selecaoCategoria} defaultValue={""}>
+                    <option value="" disabled>Selecionar categoria</option>
+                    <option value="top_rated">Melhores avaliados</option>
+                    <option value="now_playing">Últimos lançamentos</option>
+                    <option value="upcoming">Próximos lançamentos</option>
+                </select>
 
-            <form onSubmit={preencherSubmit}>
-                <input type="text"
-                placeholder="Digite o nome de um filme..."
-                onChange={(busca) => setPesquisa(busca.target.value)}
-                value={pesquisa}
-                />
-                <button type="submit"> Buscar </button>
-            </form>
-        </div>
+                <form onSubmit={preencherSubmit}>
+                    <input
+                        type="text"
+                        placeholder="Digite o nome de um filme..."
+                        onChange={(busca) => setPesquisa(busca.target.value)}
+                        value={pesquisa}
+                    />
+                    <button type="submit"> Buscar </button>
+                </form>
+            </div>
 
-        {/* NOVO */}
-        <div id="navbar-direita">
-            <Link to="/favoritos">
-                <div id="favoritos"> <AiFillStar size={30}/> </div>
-            </Link>
-            <Link to={comentariosLink}>
-                <FaComments size={22} color="#F3FD6B" />
-            </Link>
-            <Link to="/login">
-                <div id="perfil"/>
-            </Link>
-        </div>
-    </nav>
-);
-}
+            <div id="navbar-direita">
+                <Link to="/favoritos">
+                    <div id="favoritos"> <AiFillStar size={30}/> </div>
+                </Link>
+                {usuario ? (
+                    <>
+                        <Link to={comentariosLink}>
+                            <FaComments size={22} color="#F3FD6B" />
+                        </Link>
+                        <Link to="/favoritos">
+                            <AvatarUsuario nome={perfil?.nome || usuario?.email} />
+                        </Link>
+                    </>
+                ) : (
+                    <button type="button" className="botao-entrar" onClick={abrirLogin}>Entrar</button>
+                )}
+            </div>
+        </nav>
+    );
+};
 
 export default NavBar;

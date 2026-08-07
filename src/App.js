@@ -1,12 +1,14 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import NavBar from "./components/NavBar/NavBar"
+import NavBar from "./components/NavBar/NavBar";
+import ModalAuth from "./components/ModalAuth";
 
 const App = () => {
     return (
         <div className="navBar">
-            <NavBar/>
+            <NavBar />
             <Outlet />
+            <ModalAuth />
         </div>
     );
 };
