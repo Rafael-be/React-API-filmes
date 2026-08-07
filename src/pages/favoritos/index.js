@@ -3,22 +3,28 @@ import { useFavoritos } from "../../contexts/FavoritosContext";
 
 import { MovieList, Container } from "../style"
 import ContainerFilmes from "../../components/Container-filmes/Container-filmes";
+import Spinner from "../../components/Spinner";
 
 const Favoritos = () => {
 
-    const { idsFavoritos } = useFavoritos();
+    const { idsFavoritos, carregandoFavoritos } = useFavoritos();
     const [ favoritos, setFavoritos] = useState([]);
+    const [carregando, setCarregando] = useState(true);
 
     const URL = process.env.REACT_APP_URL;
     const KEY = process.env.REACT_APP_KEY;
 
     useEffect(() => {
+        if (carregandoFavoritos) return;
+
         if (idsFavoritos.length === 0) {
             setFavoritos([]);
+            setCarregando(false);
             return;
         }
 
         const buscarFavoritos = async () => {
+            setCarregando(true);
             const resultados = await Promise.all(
                 idsFavoritos.map((id) =>
                     fetch(`${URL}${id}?api_key=${KEY}&language=pt-BR`)
@@ -26,22 +32,26 @@ const Favoritos = () => {
                 )
             );
             setFavoritos(resultados);
+            setCarregando(false);
         };
 
         buscarFavoritos();
-    }, [idsFavoritos, KEY, URL]);
+    }, [carregandoFavoritos, idsFavoritos, KEY, URL]);
 
 
     return (
         <Container>
 
             <h1> <span> FAVORITOS </span> </h1>     
-            {favoritos.length === 0 && <h1> Nenhum favorito encontrado </h1>}
-            {favoritos.length > 0 &&
+            {carregando ? (
+                <Spinner />
+            ) : favoritos.length === 0 ? (
+                <h1> Nenhum favorito encontrado </h1>
+            ) : (
                 <MovieList>
                     {favoritos.map((movie) => (<ContainerFilmes key={movie.id} movie={movie}/>))}
                 </MovieList>
-            }       
+            )}
 
         </Container>
     );

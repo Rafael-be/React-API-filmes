@@ -90,6 +90,14 @@ option{
     color: #F3FD6B;
 }
 
+.botao-avatar {
+    padding: 0;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+}
+
 @media (max-width: 768px) {
     #navbar {
         flex-direction: column;

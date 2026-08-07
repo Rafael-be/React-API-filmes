@@ -166,12 +166,17 @@ export const SelectLabel = styled.label`
   font-size: 0.95rem;
   font-weight: bold;
 
+  input,
   select {
     ${inputBaseStyles}
     color: #f3fd6b;
     padding: 0.5rem 0.8rem;
     font-size: 0.95rem;
     font-weight: bold;
+    width: 120px;
+  }
+
+  select {
     cursor: pointer;
 
     option {

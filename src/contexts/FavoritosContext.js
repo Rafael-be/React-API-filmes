@@ -7,14 +7,17 @@ const FavoritosContext = createContext();
 export const FavoritosProvider = ({ children }) => {
     const {usuario} = useAuth();
     const [idsFavoritos, setIdsFavoritos] = useState([]);
+    const [carregandoFavoritos, setCarregandoFavoritos] = useState(true);
 
     useEffect(() => {
         if(!usuario){
             setIdsFavoritos([]);
+            setCarregandoFavoritos(false);
             return;
         }
 
         const buscarFavoritos = async () => {
+            setCarregandoFavoritos(true);
             const { data } = await supabase
                 .from("favoritos")
                 .select("movie_id")
@@ -24,13 +27,14 @@ export const FavoritosProvider = ({ children }) => {
                 setIdsFavoritos(data.map(item => Number(item.movie_id)));
             else
                 setIdsFavoritos([]);
+            setCarregandoFavoritos(false);
         };
 
         buscarFavoritos();
     }, [usuario]); // roda toda vez que o usuário mudar
 
     return (
-        <FavoritosContext.Provider value={{ idsFavoritos, setIdsFavoritos }}>
+        <FavoritosContext.Provider value={{ idsFavoritos, setIdsFavoritos, carregandoFavoritos }}>
             {children}
         </FavoritosContext.Provider>
     );

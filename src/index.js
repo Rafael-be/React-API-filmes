@@ -13,6 +13,7 @@ import Comentarios from "./pages/comentarios";
 import { AuthProvider } from "./contexts/AuthContext";
 import { FavoritosProvider } from "./contexts/FavoritosContext";
 import { ModalAuthProvider } from "./contexts/ModalAuthContext";
+import { ModalContaProvider } from "./contexts/ModalContaContext";
 import PrivateRoute from "./routes/privateRoutes";
 
 import "./global.css";
@@ -23,25 +24,27 @@ root.render(
     <AuthProvider>
       <BrowserRouter>
         <ModalAuthProvider>
-          <FavoritosProvider>
-            <Routes>
-              <Route path="/" element={<App />} >
-                <Route path="/" element={<Home />} />
-                <Route path="movie/:id" element={<MovieById />} />
-                <Route path="/search" element={<Pesquisa />} />
-                <Route path="/categoria" element={<Categorias />} />
+          <ModalContaProvider>
+            <FavoritosProvider>
+              <Routes>
+                <Route path="/" element={<App />} >
+                  <Route path="/" element={<Home />} />
+                  <Route path="movie/:id" element={<MovieById />} />
+                  <Route path="/search" element={<Pesquisa />} />
+                  <Route path="/categoria" element={<Categorias />} />
 
-                <Route path="/favoritos" element={
-                  <PrivateRoute>
-                    <Favoritos />
-                  </PrivateRoute>
-                } />
+                  <Route path="/favoritos" element={
+                    <PrivateRoute>
+                      <Favoritos />
+                    </PrivateRoute>
+                  } />
 
-                <Route path="comentarios" element={<Comentarios />} />
-                <Route path="comentarios/:slug" element={<Comentarios />} />
-              </Route>
-            </Routes>
-          </FavoritosProvider>
+                  <Route path="comentarios" element={<Comentarios />} />
+                  <Route path="comentarios/:slug" element={<Comentarios />} />
+                </Route>
+              </Routes>
+            </FavoritosProvider>
+          </ModalContaProvider>
         </ModalAuthProvider>
       </BrowserRouter>
     </AuthProvider>

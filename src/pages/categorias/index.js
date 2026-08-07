@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 import { MovieList, Container } from "../style"
 import ContainerFilmes from "../../components/Container-filmes/Container-filmes";
+import Spinner from "../../components/Spinner";
 
 const Categoria = () => {
 
@@ -11,6 +12,7 @@ const Categoria = () => {
 
     const [searchParams] = useSearchParams("");
     const [movie, setMovie] = useState([]);
+    const [carregando, setCarregando] = useState(true);
 
     const categoria = searchParams.get("nome");
 
@@ -24,9 +26,11 @@ const Categoria = () => {
     useEffect(() => {
 
         const obterFilmesPorCategoria = async (urlParaFetch) => {
+            setCarregando(true);
             const res = await fetch(urlParaFetch);
             const dados = await res.json();
-            setMovie(dados.results);
+            setMovie(dados.results || []);
+            setCarregando(false);
         }
 
         const urlParaFetch = `${URL}${categoria}?api_key=${KEY}&language=pt-BR`
@@ -39,9 +43,13 @@ const Categoria = () => {
 
             <h1> {`FILMES ${nome}`} </h1>
 
-            <MovieList>
-                {movie.map((movie) => (<ContainerFilmes key={movie.id} movie={movie} />))}
-            </MovieList>
+            {carregando ? (
+                <Spinner />
+            ) : (
+                <MovieList>
+                    {movie.map((movie) => (<ContainerFilmes key={movie.id} movie={movie} />))}
+                </MovieList>
+            )}
 
         </Container>
     );

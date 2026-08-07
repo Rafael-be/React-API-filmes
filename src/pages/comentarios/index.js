@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { buscarComentarioPorUsuario, buscarComentariosPorUsuarioId } from "../../services/comentarioService";
 import { buscarPerfilPorSlug, buscarMeuPerfil, atualizarVisibilidade } from "../../services/perfilService";
+import Spinner from "../../components/Spinner";
 
 import "./comentarios.css";
 
@@ -115,7 +116,7 @@ const Comentarios = () => {
     };
 
     if (carregando) {
-        return <div className="meus-comentarios carregando">Carregando...</div>;
+        return <div className="meus-comentarios carregando"><Spinner /></div>;
     }
 
     const titulo = ehDono ? "Meus Comentários" : (perfil?.nome ? `Comentários de ${perfil.nome}` : "Comentários");
@@ -127,7 +128,6 @@ const Comentarios = () => {
                     <h1>{titulo}</h1>
                     {ehDono && (
                         <div className="toggle-info" role="note">
-                            <span className="toggle-info-icon" aria-hidden="true">🔒</span>
                             <span>Esse botão controla se sua lista de comentários fica pública ou privada para outras pessoas.</span>
                         </div>
                     )}
@@ -151,6 +151,8 @@ const Comentarios = () => {
 
             {erro && <p className="mensagem-estado">{erro}</p>}
 
+            {!erro && carregandoDados && <Spinner />}
+
             {!erro && !comentarios.length && !carregandoDados && (
                 <p className="mensagem-estado">
                     {slug
@@ -159,28 +161,30 @@ const Comentarios = () => {
                 </p>
             )}
 
-            <div className="lista-comentarios">
-                {comentarios.map((comentario) => (
-                    <div key={comentario.id} className="card-comentario">
-                        <img
-                            src={`${imagePath}${comentario.poster_path}`}
-                            alt={comentario.title || comentario.movie_id}
-                        />
-                        <div className="card-comentario-conteudo">
-                            <div className="card-comentario-topo">
-                                <h3>{comentario.title || comentario.movie_id}</h3>
-                                <span className="card-comentario-nota">
-                                    {comentario.nota}/10
-                                </span>
+            {!carregandoDados && (
+                <div className="lista-comentarios">
+                    {comentarios.map((comentario) => (
+                        <div key={comentario.id} className="card-comentario">
+                            <img
+                                src={`${imagePath}${comentario.poster_path}`}
+                                alt={comentario.title || comentario.movie_id}
+                            />
+                            <div className="card-comentario-conteudo">
+                                <div className="card-comentario-topo">
+                                    <h3>{comentario.title || comentario.movie_id}</h3>
+                                    <span className="card-comentario-nota">
+                                        {comentario.nota}/10
+                                    </span>
+                                </div>
+                                <p className="card-comentario-texto">{comentario.texto}</p>
                             </div>
-                            <p className="card-comentario-texto">{comentario.texto}</p>
+                            <span className="card-comentario-data">
+                                {new Date(comentario.created_at).toLocaleDateString("pt-BR")}
+                            </span>
                         </div>
-                        <span className="card-comentario-data">
-                            {new Date(comentario.created_at).toLocaleDateString("pt-BR")}
-                        </span>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

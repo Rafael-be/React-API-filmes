@@ -3,6 +3,31 @@ import { supabase } from "./supaBase";
 const isSchemaError = (error) =>
     Boolean(error?.message && /(does not exist|relation|column)/i.test(error.message));
 
+const enriquecerComPerfis = async (comentarios = []) => {
+    if (!comentarios.length) return [];
+
+    const idsUsuarios = [...new Set(comentarios
+        .map((comentario) => comentario?.user_id)
+        .filter(Boolean))];
+
+    if (!idsUsuarios.length) return comentarios;
+
+    const { data: perfisData } = await supabase
+        .from("perfis")
+        .select("id, nome")
+        .in("id", idsUsuarios);
+
+    const perfisPorUsuario = {};
+    (perfisData || []).forEach((perfil) => {
+        perfisPorUsuario[perfil.id] = perfil;
+    });
+
+    return comentarios.map((comentario) => ({
+        ...comentario,
+        perfil_nome: comentario?.perfis?.nome || perfisPorUsuario[comentario.user_id]?.nome || comentario?.nome || comentario?.user?.nome || null,
+    }));
+};
+
 export const buscarComentarios = async (movieId) => {
     const { data, error } = await supabase
         .from("comentarios")
@@ -17,10 +42,12 @@ export const buscarComentarios = async (movieId) => {
             .eq("movie_id", movieId)
             .order("created_at", { ascending: false });
 
-        return { data: fallback.data, error: fallback.error };
+        const comentariosEnriquecidos = await enriquecerComPerfis(fallback.data || []);
+        return { data: comentariosEnriquecidos, error: fallback.error };
     }
 
-    return { data, error };
+    const comentariosEnriquecidos = await enriquecerComPerfis(data || []);
+    return { data: comentariosEnriquecidos, error };
 };
 
 export const buscarComentarioPorUsuarioEFilme = async (userId, movieId) => {
@@ -39,10 +66,20 @@ export const buscarComentarioPorUsuarioEFilme = async (userId, movieId) => {
             .eq("movie_id", movieId)
             .maybeSingle();
 
-        return { data: fallback.data, error: fallback.error };
+        if (!fallback.data) {
+            return { data: fallback.data, error: fallback.error };
+        }
+
+        const comentarioEnriquecido = (await enriquecerComPerfis([fallback.data]))[0];
+        return { data: comentarioEnriquecido, error: fallback.error };
     }
 
-    return { data, error };
+    if (!data) {
+        return { data, error };
+    }
+
+    const comentarioEnriquecido = (await enriquecerComPerfis([data]))[0];
+    return { data: comentarioEnriquecido, error };
 };
 
 export const buscarComentarioPorUsuario = async (userId) => {
@@ -57,10 +94,12 @@ export const buscarComentarioPorUsuario = async (userId) => {
             .select("id, texto, nota, created_at, user_id, movie_id")
             .eq("user_id", userId);
 
-        return { data: fallback.data, error: fallback.error };
+        const comentariosEnriquecidos = await enriquecerComPerfis(fallback.data || []);
+        return { data: comentariosEnriquecidos, error: fallback.error };
     }
 
-    return { data, error };
+    const comentariosEnriquecidos = await enriquecerComPerfis(data || []);
+    return { data: comentariosEnriquecidos, error };
 };
 
 export const buscarComentariosPorUsuarioId = async (userId) => {
@@ -77,10 +116,12 @@ export const buscarComentariosPorUsuarioId = async (userId) => {
             .eq("user_id", userId)
             .order("created_at", { ascending: false });
 
-        return { data: fallback.data, error: fallback.error };
+        const comentariosEnriquecidos = await enriquecerComPerfis(fallback.data || []);
+        return { data: comentariosEnriquecidos, error: fallback.error };
     }
 
-    return { data, error };
+    const comentariosEnriquecidos = await enriquecerComPerfis(data || []);
+    return { data: comentariosEnriquecidos, error };
 };
 
 export const adicionarComentario = async (userId, movieId, texto, nota, title, posterPath) => {

@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import CardIndividual from "../../components/Card-individual/cardIndividual";
 import Comentario from "../../components/Comentario/Comentario";
 import AdicionarComentario from "../../components/Comentario/AdicionarComentario";
+import Spinner from "../../components/Spinner";
 import { useAuth } from "../../contexts/AuthContext";
 import { buscarComentarioPorUsuarioEFilme, buscarComentarios } from "../../services/comentarioService";
 import { obterFilmePorId, buscarKeywords, buscarDiretor, buscarElenco } from "../../services/movieService";
@@ -22,22 +23,28 @@ const Movie = () => {
     const [keywords, setKeywords] = useState([]);
     const [diretor, setDiretor] = useState(null);
     const [elenco, setElenco] = useState([]);
+    const [carregandoFilme, setCarregandoFilme] = useState(true);
+    const [carregandoComentarios, setCarregandoComentarios] = useState(true);
 
     const recarregarComentarios = useCallback(async () => {
+        setCarregandoComentarios(true);
         const lista = await buscarComentarios(Number(id));
         setComentariosLista(lista.data || []);
 
         if (!usuario) {
             setComentarioUsuario(null);
+            setCarregandoComentarios(false);
             return;
         }
 
         const { data } = await buscarComentarioPorUsuarioEFilme(usuario.id, Number(id));
         setComentarioUsuario(data);
+        setCarregandoComentarios(false);
     }, [id, usuario]);
 
     useEffect(() => {
         const carregarFilme = async () => {
+            setCarregandoFilme(true);
             const [filmeRes, keywordsRes, diretorRes, elencoRes] = await Promise.all([
                 obterFilmePorId(id),
                 buscarKeywords(id),
@@ -49,6 +56,7 @@ const Movie = () => {
             setKeywords(keywordsRes);
             setDiretor(diretorRes);
             setElenco(elencoRes);
+            setCarregandoFilme(false);
         };
 
         carregarFilme();
@@ -59,7 +67,9 @@ const Movie = () => {
         <ContainerIndividual>
             <Conteudo>
                 <Info>
-                    {movie && (
+                    {carregandoFilme ? (
+                        <Spinner />
+                    ) : movie && (
                         <CardIndividual
                             key={movie.id}
                             movie={movie}
@@ -71,7 +81,9 @@ const Movie = () => {
                 </Info>
                 
                 <SecaoComentarios>
-                    {comentariosLista.length > 0 ? (
+                    {carregandoComentarios ? (
+                        <Spinner />
+                    ) : comentariosLista.length > 0 ? (
                         comentariosLista.map((c) => (
                             <Comentario key={c.id} comentario={c} />
                         ))

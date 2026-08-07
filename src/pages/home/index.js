@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 import { Container, MovieList } from "../style";
 import ContainerFilmes from '../../components/Container-filmes/Container-filmes'
+import Spinner from "../../components/Spinner";
 
 function Home() {
     const URL = process.env.REACT_APP_URL;
     const KEY = process.env.REACT_APP_KEY;
 
     const [movies, setMovies] = useState([]);
+    const [carregando, setCarregando] = useState(true);
 
     const obterFilmesPopulares = async (urlParaFetch) => {
+        setCarregando(true);
         const res = await fetch(urlParaFetch);
         const dados = await res.json();
-        setMovies(dados.results);
+        setMovies(dados.results || []);
+        setCarregando(false);
     }
 
     useEffect(() => {
@@ -23,9 +27,13 @@ function Home() {
     return (
         <Container>
             <h1> FILMES </h1>
-            <MovieList>
-                {movies.map((movie) => (<ContainerFilmes key={movie.id} movie={movie} />))} 
-            </MovieList>
+            {carregando ? (
+                <Spinner />
+            ) : (
+                <MovieList>
+                    {movies.map((movie) => (<ContainerFilmes key={movie.id} movie={movie} />))}
+                </MovieList>
+            )}
         </Container>
     );
 }

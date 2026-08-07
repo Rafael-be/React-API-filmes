@@ -2,24 +2,28 @@ import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { adicionarComentario } from "../../services/comentarioService";
 
-import { ContainerForm, Form, TextArea, AcoesForm, SelectLabel, BotaoEnviar } from './Style'; // Ajuste o caminho até o seu arquivo styles.js
+import { ContainerForm, Form, TextArea, AcoesForm, SelectLabel, BotaoEnviar } from "./Style";
 
 const AdicionarComentario = ({ movieId, title, posterPath, onComentarioAdicionado }) => {
-
     const { usuario } = useAuth();
     const [texto, setTexto] = useState("");
-    const [nota, setNota] = useState(1);
+    const [nota, setNota] = useState(0);
     const [erro, setErro] = useState(null);
     const [carregando, setCarregando] = useState(false);
 
-    if (!usuario) return null; // não exibe o formulário se não estiver logado
+    if (!usuario) return null;
 
     const handleEnviar = async (e) => {
         e.preventDefault();
         setErro(null);
 
         if (!texto.trim()) {
-            setErro("O comentário não pode estar vazio.");
+            setErro("O comentario nao pode estar vazio.");
+            return;
+        }
+
+        if (Number.isNaN(nota) || nota < 0 || nota > 10) {
+            setErro("A nota deve estar entre 0 e 10.");
             return;
         }
 
@@ -33,39 +37,40 @@ const AdicionarComentario = ({ movieId, title, posterPath, onComentarioAdicionad
         }
 
         setTexto("");
-        setNota(1);
-        onComentarioAdicionado(); // avisa a página pai pra recarregar os comentários
+        setNota(0);
+        onComentarioAdicionado();
     };
 
     return (
         <ContainerForm>
-            <h3>Deixe seu comentário</h3>
+            <h3>Deixe seu comentario</h3>
             {erro && <p className="erro">{erro}</p>}
-            
-            <Form onSubmit={handleEnviar}>
-            <TextArea
-                placeholder="Escreva seu comentário..."
-                value={texto}
-                onChange={(e) => setTexto(e.target.value)}
-            />
-            
-            <AcoesForm>
-                <SelectLabel>
-                Nota:
-                <select
-                    value={nota}
-                    onChange={(e) => setNota(Number(e.target.value))}
-                >
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
-                    <option key={n} value={n}>★ {n}</option>
-                    ))}
-                </select>
-                </SelectLabel>
 
-                <BotaoEnviar type="submit" disabled={carregando}>
-                {carregando ? "Enviando..." : "Comentar"}
-                </BotaoEnviar>
-            </AcoesForm>
+            <Form onSubmit={handleEnviar}>
+                <TextArea
+                    placeholder="Escreva seu comentario..."
+                    value={texto}
+                    onChange={(e) => setTexto(e.target.value)}
+                />
+
+                <AcoesForm>
+                    <SelectLabel>
+                        Nota:
+                        <input
+                            type="number"
+                            min="0"
+                            max="10"
+                            step="0.5"
+                            value={nota}
+                            onChange={(e) => setNota(Number(e.target.value))}
+                            placeholder="Nota (0 a 10)"
+                        />
+                    </SelectLabel>
+
+                    <BotaoEnviar type="submit" disabled={carregando}>
+                        {carregando ? "Enviando..." : "Comentar"}
+                    </BotaoEnviar>
+                </AcoesForm>
             </Form>
         </ContainerForm>
     );

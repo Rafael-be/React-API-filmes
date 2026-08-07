@@ -22,6 +22,20 @@ export const cadastrar = async (email, senha, nome) => {
 export const login = (email, senha) =>
   supabase.auth.signInWithPassword({ email, password: senha });
 
+export const alterarSenha = async (email, senhaAtual, novaSenha) => {
+  const { error: erroAuth } = await supabase.auth.signInWithPassword({
+    email,
+    password: senhaAtual,
+  });
+
+  if (erroAuth) {
+    return { data: null, error: { message: "Senha atual incorreta." } };
+  }
+
+  const { data, error } = await supabase.auth.updateUser({ password: novaSenha });
+  return { data, error };
+};
+
 export const logout = () =>
   supabase.auth.signOut();
 

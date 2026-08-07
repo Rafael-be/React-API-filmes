@@ -5,6 +5,7 @@ import { FaComments } from "react-icons/fa";
 import './NavBar.css';
 import { useAuth } from "../../contexts/AuthContext";
 import { useModalAuth } from "../../contexts/ModalAuthContext";
+import { useModalConta } from "../../contexts/ModalContaContext";
 import AvatarUsuario from "../AvatarUsuario";
 
 const NavBar = () => {
@@ -12,6 +13,7 @@ const NavBar = () => {
     const navigate = useNavigate();
     const { usuario, perfil } = useAuth();
     const { abrirLogin } = useModalAuth();
+    const { abrirConta } = useModalConta();
 
     const preencherSubmit = (busca) => {
         busca.preventDefault();
@@ -56,17 +58,17 @@ const NavBar = () => {
             </div>
 
             <div id="navbar-direita">
-                <Link to="/favoritos">
-                    <div id="favoritos"> <AiFillStar size={30}/> </div>
-                </Link>
                 {usuario ? (
                     <>
+                        <Link to="/favoritos">
+                            <div id="favoritos"> <AiFillStar size={30}/> </div>
+                        </Link>
                         <Link to={comentariosLink}>
                             <FaComments size={22} color="#F3FD6B" />
                         </Link>
-                        <Link to="/favoritos">
+                        <button type="button" className="botao-avatar" onClick={abrirConta}>
                             <AvatarUsuario nome={perfil?.nome || usuario?.email} />
-                        </Link>
+                        </button>
                     </>
                 ) : (
                     <button type="button" className="botao-entrar" onClick={abrirLogin}>Entrar</button>

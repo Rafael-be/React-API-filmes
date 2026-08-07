@@ -1,10 +1,11 @@
 import { Container, Header, Body, Footer } from './Style';
 
 const Comentario = ({comentario}) => {
-    const nomeAutor = comentario?.perfis?.nome
+    const nomeAutor = comentario?.perfil_nome
+        || comentario?.perfis?.nome
         || comentario?.nome
         || comentario?.user?.nome
-        || `Usuário ${comentario?.user_id?.slice(0, 8) || ""}`;
+        || (comentario?.user_id ? `Usuário ${comentario.user_id.slice(0, 8)}` : "Usuário");
 
     return (
         <Container>
@@ -18,7 +19,6 @@ const Comentario = ({comentario}) => {
             </Body>
             
             <Footer>
-                <a href="#util">Útil</a> 
                 <span>{new Date(comentario.created_at).toLocaleDateString("pt-BR")}</span>
             </Footer>
         </Container>
