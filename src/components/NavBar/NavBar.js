@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
-import { FaComments } from "react-icons/fa";
-import './NavBar.css';
+import { FaComments, FaSearch } from "react-icons/fa";
+import "./NavBar.css";
 import { useAuth } from "../../contexts/AuthContext";
 import { useModalAuth } from "../../contexts/ModalAuthContext";
 import { useModalConta } from "../../contexts/ModalContaContext";
@@ -33,45 +33,54 @@ const NavBar = () => {
     const comentariosLink = usuario ? (perfil?.slug ? `/comentarios/${perfil.slug}` : "/comentarios") : "#";
 
     return (
-        <nav id="navbar">
-            <div id="navbar-esquerda">
-                <h2>
-                    <Link to="/"> Biblioteca de filmes </Link>
+        <nav className="navbar">
+            <div className="navbar__grupo navbar__grupo--principal">
+                <h2 className="navbar__marca">
+                    <Link to="/">Biblioteca de filmes</Link>
                 </h2>
 
-                <select onChange={selecaoCategoria} defaultValue={""}>
+                <select
+                    className="navbar__categoria"
+                    onChange={selecaoCategoria}
+                    defaultValue=""
+                    aria-label="Selecionar categoria"
+                >
                     <option value="" disabled>Selecionar categoria</option>
                     <option value="top_rated">Melhores avaliados</option>
-                    <option value="now_playing">Últimos lançamentos</option>
-                    <option value="upcoming">Próximos lançamentos</option>
+                    <option value="now_playing">Ultimos lancamentos</option>
+                    <option value="upcoming">Proximos lancamentos</option>
                 </select>
 
-                <form onSubmit={preencherSubmit}>
+                <form className="navbar__busca" onSubmit={preencherSubmit} role="search">
                     <input
                         type="text"
                         placeholder="Digite o nome de um filme..."
+                        aria-label="Digite o nome de um filme"
                         onChange={(busca) => setPesquisa(busca.target.value)}
                         value={pesquisa}
                     />
-                    <button type="submit"> Buscar </button>
+                    <button type="submit" aria-label="Buscar filme">
+                        <FaSearch />
+                        Buscar
+                    </button>
                 </form>
             </div>
 
-            <div id="navbar-direita">
+            <div className="navbar__grupo navbar__grupo--acoes">
                 {usuario ? (
                     <>
-                        <Link to="/favoritos">
-                            <div id="favoritos"> <AiFillStar size={30}/> </div>
+                        <Link className="navbar__icone-link" to="/favoritos" aria-label="Ver favoritos">
+                            <AiFillStar size={30} />
                         </Link>
-                        <Link to={comentariosLink}>
-                            <FaComments size={22} color="#F3FD6B" />
+                        <Link className="navbar__icone-link" to={comentariosLink} aria-label="Ver comentarios">
+                            <FaComments size={22} />
                         </Link>
-                        <button type="button" className="botao-avatar" onClick={abrirConta}>
+                        <button type="button" className="navbar__botao-avatar" onClick={abrirConta} aria-label="Abrir conta">
                             <AvatarUsuario nome={perfil?.nome || usuario?.email} />
                         </button>
                     </>
                 ) : (
-                    <button type="button" className="botao-entrar" onClick={abrirLogin}>Entrar</button>
+                    <button type="button" className="navbar__botao-entrar" onClick={abrirLogin}>Entrar</button>
                 )}
             </div>
         </nav>

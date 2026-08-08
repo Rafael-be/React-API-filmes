@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { buscarComentarioPorUsuario, buscarComentariosPorUsuarioId } from "../../services/comentarioService";
+import { buscarComentariosPorUsuarioId } from "../../services/comentarioService";
 import { buscarPerfilPorSlug, buscarMeuPerfil, atualizarVisibilidade } from "../../services/perfilService";
 import Spinner from "../../components/Spinner";
 
@@ -33,6 +33,8 @@ const Comentarios = () => {
 
                 try {
                     const res = await fetch(`${URL}${comentario.movie_id}?api_key=${KEY}&language=pt-BR`);
+                    if (!res.ok) return comentario;
+
                     const filme = await res.json();
                     return { ...comentario, poster_path: filme.poster_path, title: filme.title };
                 } catch {
@@ -45,66 +47,78 @@ const Comentarios = () => {
     }, [KEY, URL]);
 
     useEffect(() => {
+        let ativo = true;
+
         const carregar = async () => {
             setCarregandoDados(true);
             setErro("");
 
             try {
-                if (slug) {
-                    const { data: perfilEncontrado, error } = await buscarPerfilPorSlug(slug);
-
-                    if (error || !perfilEncontrado) {
-                        setErro("Este perfil não existe ou não está disponível.");
-                        setPerfil(null);
-                        setComentarios([]);
-                        setCarregandoDados(false);
+                if (!slug) {
+                    if (!usuario) {
+                        navigate("/?auth=login", { replace: true });
                         return;
                     }
 
-                    setPerfil(perfilEncontrado);
+                    const { data: meuPerfil, error } = await buscarMeuPerfil(usuario.id);
 
-                    const ehDonoVisitante = Boolean(usuario && usuario.id === perfilEncontrado.id);
-                    if (!perfilEncontrado.lista_publica && !ehDonoVisitante) {
+                    if (!ativo) return;
+
+                    if (error || !meuPerfil?.slug) {
+                        setPerfil(meuPerfil || null);
                         setComentarios([]);
-                        setCarregandoDados(false);
+                        setErro("Nao foi possivel encontrar o slug do seu perfil.");
                         return;
                     }
 
-                    const { data } = await buscarComentariosPorUsuarioId(perfilEncontrado.id);
-                    const comDetalhes = await enriquecerComentarios(data || []);
-                    setComentarios(comDetalhes);
-                    setCarregandoDados(false);
+                    navigate(`/comentarios/${meuPerfil.slug}`, { replace: true });
                     return;
                 }
 
-                if (!usuario) {
-                    navigate("/login", { replace: true });
-                    setCarregandoDados(false);
+                const { data: perfilEncontrado, error } = await buscarPerfilPorSlug(slug);
+
+                if (!ativo) return;
+
+                if (error || !perfilEncontrado) {
+                    setErro("Este perfil nao existe ou nao esta disponivel.");
+                    setPerfil(null);
+                    setComentarios([]);
                     return;
                 }
 
-                const { data: meuPerfil } = await buscarMeuPerfil(usuario.id);
-                setPerfil(meuPerfil);
+                setPerfil(perfilEncontrado);
 
-                const { data } = await buscarComentarioPorUsuario(usuario.id);
+                const ehDonoVisitante = Boolean(usuario && usuario.id === perfilEncontrado.id);
+                if (!perfilEncontrado.lista_publica && !ehDonoVisitante) {
+                    setComentarios([]);
+                    return;
+                }
+
+                const { data } = await buscarComentariosPorUsuarioId(perfilEncontrado.id);
                 const comDetalhes = await enriquecerComentarios(data || []);
-                setComentarios(comDetalhes);
-                setCarregandoDados(false);
+
+                if (ativo) setComentarios(comDetalhes);
             } catch (err) {
-                // captura qualquer erro inesperado para evitar que a UI quebre
-                // e mostra uma mensagem amigável ao usuário
                 // eslint-disable-next-line no-console
-                console.error("Erro ao carregar comentários:", err);
-                setErro("Ocorreu um erro ao carregar os comentários. Tente novamente mais tarde.");
-                setPerfil(null);
-                setComentarios([]);
-                setCarregandoDados(false);
+                console.error("Erro ao carregar comentarios:", err);
+
+                if (ativo) {
+                    setErro("Ocorreu um erro ao carregar os comentarios. Tente novamente mais tarde.");
+                    setPerfil(null);
+                    setComentarios([]);
+                }
+            } finally {
+                if (ativo) setCarregandoDados(false);
             }
         };
 
         if (!carregando) {
             carregar();
         }
+
+        return () => {
+            ativo = false;
+        };
     }, [carregando, enriquecerComentarios, navigate, slug, usuario]);
 
     const handleToggle = async () => {
@@ -112,14 +126,19 @@ const Comentarios = () => {
 
         const novoValor = !perfil.lista_publica;
         setPerfil({ ...perfil, lista_publica: novoValor });
-        await atualizarVisibilidade(usuario.id, novoValor);
+
+        const { error } = await atualizarVisibilidade(usuario.id, novoValor);
+        if (error) {
+            setPerfil({ ...perfil, lista_publica: !novoValor });
+            setErro("Nao foi possivel atualizar a visibilidade agora.");
+        }
     };
 
     if (carregando) {
         return <div className="meus-comentarios carregando"><Spinner /></div>;
     }
 
-    const titulo = ehDono ? "Meus Comentários" : (perfil?.nome ? `Comentários de ${perfil.nome}` : "Comentários");
+    const titulo = ehDono ? "Meus Comentarios" : (perfil?.nome ? `Comentarios de ${perfil.nome}` : "Comentarios");
 
     return (
         <div className="meus-comentarios">
@@ -128,14 +147,14 @@ const Comentarios = () => {
                     <h1>{titulo}</h1>
                     {ehDono && (
                         <div className="toggle-info" role="note">
-                            <span>Esse botão controla se sua lista de comentários fica pública ou privada para outras pessoas.</span>
+                            <span>Este botao controla se sua lista de comentarios fica publica ou privada para outras pessoas.</span>
                         </div>
                     )}
                 </div>
 
                 {ehDono && (
                     <label className="toggle-wrapper" htmlFor="visibilidade-lista">
-                        <span className="toggle-label">{perfil?.lista_publica ? "Público" : "Privado"}</span>
+                        <span className="toggle-label">{perfil?.lista_publica ? "Publico" : "Privado"}</span>
                         <span className="toggle">
                             <input
                                 id="visibilidade-lista"
@@ -156,8 +175,8 @@ const Comentarios = () => {
             {!erro && !comentarios.length && !carregandoDados && (
                 <p className="mensagem-estado">
                     {slug
-                        ? "Esta lista de comentários está privada ou ainda não possui comentários."
-                        : "Você ainda não possui comentários."}
+                        ? "Esta lista de comentarios esta privada ou ainda nao possui comentarios."
+                        : "Redirecionando para seus comentarios..."}
                 </p>
             )}
 
@@ -165,10 +184,12 @@ const Comentarios = () => {
                 <div className="lista-comentarios">
                     {comentarios.map((comentario) => (
                         <div key={comentario.id} className="card-comentario">
-                            <img
-                                src={`${imagePath}${comentario.poster_path}`}
-                                alt={comentario.title || comentario.movie_id}
-                            />
+                            {comentario.poster_path && (
+                                <img
+                                    src={`${imagePath}${comentario.poster_path}`}
+                                    alt={comentario.title || comentario.movie_id}
+                                />
+                            )}
                             <div className="card-comentario-conteudo">
                                 <div className="card-comentario-topo">
                                     <h3>{comentario.title || comentario.movie_id}</h3>

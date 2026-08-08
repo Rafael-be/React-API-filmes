@@ -1,47 +1,37 @@
 import styled, { css } from "styled-components";
 
-// ==========================================
-// ESTILOS BASE REUTILIZÁVEIS (MIXINS / BASE)
-// ==========================================
-
-// Estilo base para os cards escuros (Usado no Comentário e no Formulário)
 const BaseCard = styled.div`
-  background-color: #1e1e1e;
-  border: 1px solid #2a2a2a;
-  border-radius: 8px;
+  background-color: var(--color-surface-solid);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   width: 100%;
   box-sizing: border-box;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-sm);
 `;
 
-// Estilo base para inputs/selects (fundo escuro e borda que ilumina no foco)
 const inputBaseStyles = css`
-  background: #121212;
-  border: 1px solid #2a2a2a;
-  border-radius: 6px;
-  color: #ffffff;
+  background: var(--color-bg-page);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-fast);
 
   &:focus {
-    border-color: #f3fd6b;
+    border-color: var(--color-accent);
   }
 `;
-
-// ==========================================
-// COMPONENTES DO COMENTÁRIO
-// ==========================================
 
 export const Container = styled(BaseCard)`
   padding: 1.2rem;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
 
   &:hover {
     transform: translateY(-2px);
-    border-color: #f3fd6b;
+    border-color: var(--color-accent);
   }
 `;
 
@@ -49,20 +39,20 @@ export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #2a2a2a;
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: 0.5rem;
   width: 100%;
 
   span {
     font-weight: bold;
     font-size: 1rem;
-    color: #e0e0e0;
+    color: var(--color-text-soft);
 
     &.nota {
-      background: #f3fd6b;
-      color: #121212;
+      background: var(--color-accent);
+      color: var(--color-bg-page);
       padding: 0.2rem 0.6rem;
-      border-radius: 20px;
+      border-radius: var(--radius-pill);
       font-size: 0.85rem;
     }
   }
@@ -72,7 +62,7 @@ export const Body = styled.div`
   width: 100%;
 
   p {
-    color: #b3b3b3;
+    color: var(--color-text-secondary);
     font-size: 0.95rem;
     line-height: 1.5;
     margin: 0;
@@ -88,14 +78,14 @@ export const Footer = styled.div`
 
   span {
     font-size: 0.8rem;
-    color: #666;
+    color: var(--color-text-subtle);
   }
 
   a {
-    color: #f3fd6b;
+    color: var(--color-accent);
     text-decoration: none;
     font-size: 0.85rem;
-    transition: transform 0.2s ease;
+    transition: transform var(--transition-fast);
 
     &:hover {
       transform: scale(1.05);
@@ -103,29 +93,25 @@ export const Footer = styled.div`
   }
 `;
 
-// ==========================================
-// COMPONENTES DO FORMULÁRIO DE COMENTÁRIO
-// ==========================================
-
 export const ContainerForm = styled(BaseCard)`
   padding: 1.5rem;
 
   h3 {
-    color: #ffffff;
+    color: var(--color-text-primary);
     font-size: 1.2rem;
     margin-bottom: 1rem;
-    border-bottom: 1px solid #2a2a2a;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 0.5rem;
   }
 
   .erro {
-    color: #ff5555;
+    color: var(--color-error);
     font-size: 0.85rem;
     margin-bottom: 1rem;
-    background: rgba(255, 85, 85, 0.1);
+    background: var(--color-error-bg);
     padding: 0.6rem;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 85, 85, 0.3);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-error-border);
   }
 `;
 
@@ -146,7 +132,7 @@ export const TextArea = styled.textarea`
   box-sizing: border-box;
 
   &::placeholder {
-    color: #666666;
+    color: var(--color-text-subtle);
   }
 `;
 
@@ -162,14 +148,14 @@ export const SelectLabel = styled.label`
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  color: #e0e0e0;
+  color: var(--color-text-soft);
   font-size: 0.95rem;
   font-weight: bold;
 
   input,
   select {
     ${inputBaseStyles}
-    color: #f3fd6b;
+    color: var(--color-accent);
     padding: 0.5rem 0.8rem;
     font-size: 0.95rem;
     font-weight: bold;
@@ -180,25 +166,25 @@ export const SelectLabel = styled.label`
     cursor: pointer;
 
     option {
-      background: #121212;
-      color: #ffffff;
+      background: var(--color-bg-page);
+      color: var(--color-text-primary);
     }
   }
 `;
 
 export const BotaoEnviar = styled.button`
-  background: #f3fd6b;
-  color: #121212;
+  background: var(--color-accent);
+  color: var(--color-bg-page);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   padding: 0.6rem 1.4rem;
   font-weight: bold;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
 
   &:hover:not(:disabled) {
-    background: #e2ee55;
+    background: var(--color-accent-gold);
     transform: translateY(-1px);
   }
 

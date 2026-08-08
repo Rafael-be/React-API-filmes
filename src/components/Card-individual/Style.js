@@ -8,10 +8,10 @@ export const Info = styled.div`
     max-width: 640px;
     margin: 3rem auto;
     padding: 2.5rem 2rem;
-    background: linear-gradient(180deg, #1a1a1a 0%, #141414 100%);
+    background: linear-gradient(180deg, var(--color-surface-start) 0%, var(--color-surface-end) 100%);
     border-radius: 1.25rem;
-    border: 1px solid rgba(247, 211, 84, 0.15);
-    box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--color-border-soft);
+    box-shadow: var(--shadow-panel);
 
     @media (max-width: 600px) {
         margin: 1.5rem 1rem;

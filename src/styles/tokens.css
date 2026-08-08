@@ -1,0 +1,44 @@
+:root {
+  --font-family-base: "League Spartan", "Segoe UI", system-ui, sans-serif;
+
+  --color-bg-base: #000000;
+  --color-bg-page: #121212;
+  --color-surface-start: #1a1a1a;
+  --color-surface-end: #141414;
+  --color-surface-solid: #1e1e1e;
+  --color-input: #1f1f1f;
+  --color-input-focus: #242424;
+  --color-border: #2a2a2a;
+  --color-border-soft: rgba(247, 211, 84, 0.15);
+  --color-border-accent: rgba(247, 211, 84, 0.35);
+
+  --color-accent: #f3fd6b;
+  --color-accent-gold: #f7d354;
+  --color-accent-gold-soft: rgba(247, 211, 84, 0.12);
+
+  --color-text-primary: #ffffff;
+  --color-text-soft: #f2f2f2;
+  --color-text-secondary: #b3b3b3;
+  --color-text-muted: #8a8a8a;
+  --color-text-subtle: #666666;
+  --color-text-inverse: #111111;
+
+  --color-error: #ff7373;
+  --color-error-bg: rgba(220, 53, 69, 0.12);
+  --color-error-border: rgba(220, 53, 69, 0.35);
+  --color-success: #b7ff8a;
+  --color-success-bg: rgba(67, 160, 71, 0.16);
+  --color-success-border: rgba(67, 160, 71, 0.35);
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 16px;
+  --radius-panel: 20px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.2);
+  --shadow-panel: 0 20px 60px -20px rgba(0, 0, 0, 0.8);
+  --shadow-modal: 0 25px 70px -15px rgba(0, 0, 0, 0.7);
+  --transition-fast: 0.2s ease;
+}

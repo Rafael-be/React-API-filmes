@@ -5,15 +5,26 @@ export const Container = styled.div`
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  color: #fff;
+  color: var(--color-text-primary);
 
   h1 {
     text-align: center;
     margin: 1rem 0;
     font-size: 2.5rem;
+    position: relative;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 48px;
+      height: 3px;
+      margin: 0.75rem auto 0;
+      border-radius: var(--radius-pill);
+      background: var(--color-accent-gold);
+    }
     
     span {
-      color: #f3fd6b;
+      color: var(--color-accent);
     }
   }
 `;
@@ -23,8 +34,8 @@ export const ContainerIndividual = styled.div`
   padding: 2rem 1rem; /* Menos padding nas laterais para telas pequenas */
   width: 100%;
   min-height: 100vh;
-  background-color: #121212;
-  color: #ffffff;
+  background-color: var(--color-bg-page);
+  color: var(--color-text-primary);
   display: flex;
   justify-content: center;
   font-family: sans-serif;
@@ -56,8 +67,8 @@ export const SecaoComentarios = styled.div`
 
   h2 {
     font-size: 1.4rem;
-    color: #fff;
-    border-bottom: 2px solid #2a2a2a;
+    color: var(--color-text-primary);
+    border-bottom: 2px solid var(--color-border);
     padding-bottom: 0.5rem;
     margin-bottom: 0.5rem;
   }
@@ -65,20 +76,20 @@ export const SecaoComentarios = styled.div`
 
 // Card de cada comentário
 export const AreaComentario = styled.div`
-  background: #1e1e1e;
+  background: var(--color-surface-solid);
   padding: 1.2rem;
   border-radius: 8px;
-  border: 1px solid #2a2a2a;
+  border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-sm);
   transition: transform 0.2s ease, border-color 0.2s ease;
   width: 100%;
 
   &:hover {
     transform: translateY(-2px);
-    border-color: #f3fd6b;
+    border-color: var(--color-accent);
   }
 
   .header-comentario {
@@ -88,13 +99,13 @@ export const AreaComentario = styled.div`
     
     .usuario {
       font-weight: bold;
-      color: #e0e0e0;
+      color: var(--color-text-soft);
       font-size: 0.95rem;
     }
 
     .nota {
-      background: #f3fd6b;
-      color: #121212;
+      background: var(--color-accent);
+      color: var(--color-bg-page);
       padding: 0.2rem 0.6rem;
       border-radius: 20px;
       font-weight: bold;
@@ -105,12 +116,12 @@ export const AreaComentario = styled.div`
   .texto {
     font-size: 0.95rem;
     line-height: 1.5;
-    color: #b3b3b3;
+    color: var(--color-text-secondary);
   }
 
   .data {
     font-size: 0.8rem;
-    color: #666;
+    color: var(--color-text-subtle);
     text-align: right;
   }
 `;

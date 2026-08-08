@@ -10,6 +10,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useFavoritos } from "../../contexts/FavoritosContext";
 
 const imagePath = process.env.REACT_APP_IMAGE_URL;
+const corEstrela = "var(--color-accent-gold)";
 
 const notaParaEstrela = (  { media } ) => {
     let nota = media / 2;
@@ -19,17 +20,17 @@ const notaParaEstrela = (  { media } ) => {
         <span className="estrelas">
              {array.map((numero) => {
                 if (numero <= Math.floor(nota))
-                    return <FaStar key={numero} color="#f7d354" />;
+                    return <FaStar key={numero} color={corEstrela} />;
                 if (numero - nota < 1)
-                    return <FaStarHalfAlt key={numero} color="#f7d354"/>;
+                    return <FaStarHalfAlt key={numero} color={corEstrela}/>;
 
-                return <FaRegStar key={numero} color="#f7d354"/>;
+                return <FaRegStar key={numero} color={corEstrela}/>;
             })}
         </span>
     );
 };
 
-const ContainerFilmes = ({movie, logado = false}) => {
+const ContainerFilmes = ({movie}) => {
    
     const { usuario } = useAuth();
     const { idsFavoritos, setIdsFavoritos } = useFavoritos();
@@ -54,7 +55,7 @@ const ContainerFilmes = ({movie, logado = false}) => {
                 />
                 <EstrelaFlutuante className={`${movie.title}`} >
                     {!idsFavoritos.includes(movie.id) && <FaRegStar onClick={ () => favoritar({ id: movie.id }) } />}
-                    {idsFavoritos.includes(movie.id) && <FaStar color="#f7d354" onClick={ () => desFavoritar({ id: movie.id }) } />}
+                    {idsFavoritos.includes(movie.id) && <FaStar color={corEstrela} onClick={ () => desFavoritar({ id: movie.id }) } />}
                 </EstrelaFlutuante>
             </Imagem>
             {<span>{movie.title}</span>}
@@ -72,8 +73,7 @@ ContainerFilmes.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     poster_path: PropTypes.string,
-  }).isRequired,
-  logado: PropTypes.bool
+  }).isRequired
 };
 
 export default ContainerFilmes;

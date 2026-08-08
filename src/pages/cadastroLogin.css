@@ -11,17 +11,17 @@
 .card {
     width: 100%;
     max-width: 400px;
-    background: linear-gradient(180deg, #1c1c1c 0%, #141414 100%);
-    border: 1px solid rgba(247, 211, 84, 0.12);
-    border-radius: 20px;
+    background: linear-gradient(180deg, var(--color-surface-start) 0%, var(--color-surface-end) 100%);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-panel);
     padding: 2.5rem 2.25rem;
-    box-shadow: 0 25px 70px -15px rgba(0, 0, 0, 0.7);
+    box-shadow: var(--shadow-modal);
     animation: modalEntrada 0.25s ease;
 }
 
 @keyframes modalEntrada {
     from { opacity: 0; transform: translateY(8px) scale(0.98); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .card h2 {
@@ -29,8 +29,7 @@
     margin-bottom: 0.4rem;
     font-size: 1.7rem;
     font-weight: 700;
-    letter-spacing: -0.02em;
-    color: #ffffff;
+    color: var(--color-text-primary);
 }
 
 .card::before {
@@ -38,8 +37,8 @@
     display: block;
     width: 42px;
     height: 3px;
-    background: #f7d354;
-    border-radius: 999px;
+    background: var(--color-accent-gold);
+    border-radius: var(--radius-pill);
     margin: 0 auto 1.5rem;
 }
 
@@ -52,37 +51,37 @@
 .card input {
     width: 100%;
     padding: 0.85rem 1rem;
-    background: #1f1f1f;
-    color: #fff;
-    border: 1px solid #2a2a2a;
-    border-radius: 10px;
+    background: var(--color-input);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
     font-size: 0.95rem;
-    transition: border-color 0.2s, background 0.2s;
+    transition: border-color var(--transition-fast), background var(--transition-fast);
 }
 
 .card input::placeholder {
-    color: #6b6b6b;
+    color: var(--color-text-subtle);
 }
 
 .card input:focus {
     outline: none;
-    border-color: #f7d354;
-    background: #242424;
+    border-color: var(--color-accent-gold);
+    background: var(--color-input-focus);
 }
 
 .input-senha-auth {
     display: flex;
     width: 100%;
-    background: #1f1f1f;
-    border: 1px solid #2a2a2a;
-    border-radius: 10px;
+    background: var(--color-input);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    transition: border-color 0.2s, background 0.2s;
+    transition: border-color var(--transition-fast), background var(--transition-fast);
 }
 
 .input-senha-auth:focus-within {
-    border-color: #f7d354;
-    background: #242424;
+    border-color: var(--color-accent-gold);
+    background: var(--color-input-focus);
 }
 
 .input-senha-auth input {
@@ -95,10 +94,10 @@
 .input-senha-auth button {
     width: 44px;
     border: none;
-    border-left: 1px solid #2a2a2a;
+    border-left: 1px solid var(--color-border);
     border-radius: 0;
-    background: #242424;
-    color: #f7d354;
+    background: var(--color-input-focus);
+    color: var(--color-accent-gold);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -108,13 +107,12 @@
     width: 100%;
     padding: 0.9rem;
     margin-top: 0.35rem;
-    background: #f7d354;
-    color: #111;
+    background: var(--color-accent-gold);
+    color: var(--color-text-inverse);
     border: none;
-    border-radius: 10px;
+    border-radius: var(--radius-lg);
     font-size: 0.95rem;
     font-weight: 700;
-    letter-spacing: 0.01em;
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
@@ -132,33 +130,33 @@
     border: none !important;
     padding: 0 !important;
     width: auto !important;
-    color: #f7d354 !important;
+    color: var(--color-accent-gold) !important;
     font-weight: 600;
     text-decoration: none;
     display: inline;
     cursor: pointer;
     border-bottom: 1px solid transparent !important;
-    transition: border-color 0.2s;
+    transition: border-color var(--transition-fast);
 }
 
 .link-botao:hover {
-    border-bottom: 1px solid #f7d354 !important;
+    border-bottom: 1px solid var(--color-accent-gold) !important;
 }
 
 .card p {
     margin-top: 1.5rem;
     text-align: center;
-    color: #8a8a8a;
+    color: var(--color-text-muted);
     font-size: 0.88rem;
 }
 
 .erro {
     margin-bottom: 1.1rem;
     padding: 0.75rem 0.9rem;
-    background: rgba(220, 53, 69, 0.12);
-    border: 1px solid rgba(220, 53, 69, 0.35);
-    border-radius: 10px;
-    color: #ff7373;
+    background: var(--color-error-bg);
+    border: 1px solid var(--color-error-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-error);
     text-align: center;
     font-size: 0.85rem;
 }
@@ -166,7 +164,7 @@
 @media (max-width: 480px) {
     .card {
         padding: 2rem 1.5rem;
-        border-radius: 16px;
+        border-radius: var(--radius-xl);
         max-width: 340px;
     }
 

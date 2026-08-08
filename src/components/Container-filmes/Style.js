@@ -11,7 +11,7 @@ export const Movie = styled.li`
         text-align: center;
     }
     a {
-        transition: all 0.3s;
+        transition: transform var(--transition-fast);
     }
     a:hover {
         transform: scale(1.1);
@@ -23,7 +23,7 @@ export const EstrelaFlutuante = styled.div`
     top: 1.15rem;
     right: 1.89rem;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
     cursor: pointer;
 
     &:hover {
@@ -32,7 +32,7 @@ export const EstrelaFlutuante = styled.div`
     }
 
     svg {
-        transition: transform 0.2s ease;
+        transition: transform var(--transition-fast);
     }
 
     svg:hover {
@@ -53,8 +53,9 @@ export const EstrelaFlutuante = styled.div`
 export const Imagem = styled.div`
     img {
         width: 200px;
-        border-radius: 1rem;
+        border-radius: var(--radius-xl);
         margin: 0.7rem 1.5rem;
+        box-shadow: var(--shadow-sm);
     }
     position: relative;
 
@@ -67,11 +68,11 @@ export const Btn = styled.button`
     margin-top: 5px;
     padding: 0.7rem 3rem;
     border: none;
-    border-radius: 15px;
-    color: #212121;
-    background-color: #ffffff;
+    border-radius: var(--radius-xl);
+    color: var(--color-text-inverse);
+    background-color: var(--color-text-primary);
     font-weight: 1000;
     font-size: 12 px;
     cursor: pointer;
-    transition: all 250ms;
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
 `;

@@ -1,19 +1,19 @@
 .card-individual-modern {
   display: flex;
   flex-direction: row;
-  background: linear-gradient(180deg, #1a1a1a 0%, #141414 100%);
+  background: linear-gradient(180deg, var(--color-surface-start) 0%, var(--color-surface-end) 100%);
   border-radius: 1.25rem;
   overflow: hidden;
-  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.8);
-  color: #f2f2f2;
-  font-family: "Segoe UI", system-ui, sans-serif;
-  border: 1px solid rgba(247, 211, 84, 0.15);
+  box-shadow: var(--shadow-panel);
+  color: var(--color-text-soft);
+  font-family: var(--font-family-base);
+  border: 1px solid var(--color-border-soft);
   width: 100%;
 }
 
 .card-poster {
   flex: 0 0 min(320px, 100%);
-  background: #0f0f0f;
+  background: var(--color-bg-base);
 }
 
 .card-poster img {
@@ -48,7 +48,7 @@
 .movie-tagline {
   font-size: 1rem;
   font-style: italic;
-  color: #a0a0a0;
+  color: var(--color-text-muted);
   margin: 0;
 }
 
@@ -70,7 +70,7 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #f7d354;
+  color: var(--color-accent-gold);
   margin-bottom: 0.4rem;
   font-weight: 600;
 }
@@ -90,14 +90,14 @@
   font-size: 1.1rem;
   margin-bottom: 0.75rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-text-primary);
   text-align: left;
 }
 
 .movie-description p {
   font-size: 1rem;
   line-height: 1.6;
-  color: #d4d4d4;
+  color: var(--color-text-secondary);
   margin: 0;
   overflow-wrap: anywhere;
 }
@@ -119,7 +119,7 @@
   display: flex;
   align-items: center;
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 40px;
+  border-radius: var(--radius-pill);
   padding: 0.4rem;
   padding-right: 1.25rem;
   gap: 0.75rem;
@@ -145,8 +145,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #333;
-  color: #cfcfcf;
+  background: var(--color-border);
+  color: var(--color-text-secondary);
   font-size: 0.8rem;
 }
 
@@ -161,13 +161,13 @@
 .cast-name {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #f2f2f2;
+  color: var(--color-text-soft);
   overflow-wrap: anywhere;
 }
 
 .cast-character {
   font-size: 0.8rem;
-  color: #a0a0a0;
+  color: var(--color-text-muted);
 }
 
 @media (max-width: 900px) {

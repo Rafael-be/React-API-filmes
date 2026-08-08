@@ -1,127 +1,154 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-button{
-    cursor: pointer;
-}
-
-#navbar{
-    padding: 1rem;
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 3%;
-    background-color: #141414bc;
+    gap: 1.5rem;
+    padding: 0.85rem 1.25rem;
+    background: linear-gradient(180deg, rgba(26, 26, 26, 0.96) 0%, rgba(20, 20, 20, 0.96) 100%);
+    border-bottom: 1px solid var(--color-border-soft);
+    box-shadow: 0 16px 40px -28px rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
 }
 
-#navbar-esquerda{
+.navbar__grupo {
     display: flex;
     align-items: center;
+    gap: 1rem;
+    min-width: 0;
+}
+
+.navbar__grupo--principal {
+    flex: 1 1 auto;
+}
+
+.navbar__marca {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1;
     white-space: nowrap;
-    gap: 1rem;
 }
 
-#navbar-direita{
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-a{
+.navbar__marca a,
+.navbar__icone-link {
+    color: var(--color-accent);
     text-decoration: none;
-    color: #f3fd6b;
-    background-color: transparent;
 }
 
-select{
-    padding: .5%;
-    border-radius: 5px;
-    background-color: transparent;
-    color: white;
+.navbar__marca a {
+    font-weight: 800;
+}
+
+.navbar__categoria,
+.navbar__busca input,
+.navbar__busca button,
+.navbar__botao-entrar {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background: var(--color-input);
+    color: var(--color-text-primary);
+    transition: border-color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+}
+
+.navbar__categoria {
+    padding: 0.55rem 0.75rem;
     cursor: pointer;
 }
 
-form{
-    padding: .025%;
-    gap: 0.1rem;
+.navbar__categoria:focus,
+.navbar__busca input:focus {
+    outline: none;
+    border-color: var(--color-accent-gold);
+    background: var(--color-input-focus);
+}
+
+.navbar__categoria option {
+    background: var(--color-input);
+    color: var(--color-text-primary);
+}
+
+.navbar__busca {
     display: flex;
+    gap: 0.4rem;
+    min-width: min(100%, 320px);
 }
 
-input, button{
-    padding: .3rem;  
-    border-radius: 5px;  
-    border: 1px black solid;
+.navbar__busca input {
+    width: 100%;
+    min-width: 0;
+    padding: 0.6rem 0.8rem;
 }
 
-option{
-    border: 1px solid black;
-    background-color: rgba(255, 255, 255, 0.468);
-    color: #000000;
-}
-
-#favoritos{
-    display: flex;
+.navbar__busca button,
+.navbar__botao-entrar {
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.85rem;
+    cursor: pointer;
+    font-weight: 700;
 }
 
-.avatar-usuario {
-    border-radius: 50%;
+.navbar__busca button {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-text-inverse);
+}
+
+.navbar__busca button:hover,
+.navbar__botao-entrar:hover,
+.navbar__icone-link:hover,
+.navbar__botao-avatar:hover {
+    transform: translateY(-1px);
+}
+
+.navbar__botao-entrar {
+    border-color: var(--color-border-accent);
+    background: transparent;
+    color: var(--color-accent);
+}
+
+.navbar__icone-link,
+.navbar__botao-avatar {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #000000;
-    font-weight: 700;
-    flex-shrink: 0;
-    border: 2px solid rgba(247, 211, 84, 0.4);
-    transition: opacity 0.2s;
 }
 
-.avatar-usuario:hover {
-    opacity: 0.8;
-}
-
-.botao-entrar {
-    padding: 0.45rem 0.8rem;
-    border: 1px solid rgba(247, 211, 84, 0.4);
-    background: transparent;
-    color: #F3FD6B;
-}
-
-.botao-avatar {
+.navbar__botao-avatar {
     padding: 0;
     border: none;
     background: transparent;
-    display: flex;
-    align-items: center;
 }
 
-@media (max-width: 768px) {
-    #navbar {
+@media (max-width: 820px) {
+    .navbar {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
+        align-items: stretch;
     }
 
-    #navbar-esquerda {
+    .navbar__grupo {
+        width: 100%;
+    }
+
+    .navbar__grupo--principal {
         flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
+        align-items: stretch;
     }
 
-    form {
-        width: 100%;
+    .navbar__grupo--acoes {
+        justify-content: flex-end;
     }
 
-    input {
-        width: 100%;
+    .navbar__marca {
+        white-space: normal;
     }
 
-    #navbar-direita {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
+    .navbar__busca {
+        min-width: 0;
+        width: 100%;
     }
 }

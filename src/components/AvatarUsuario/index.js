@@ -1,4 +1,5 @@
 import React from "react";
+import "./avatarUsuario.css";
 
 const PALETA_AVATAR = ["#F3FD6B", "#F7D354", "#4EA8DE", "#FF6B6B", "#9B5DE5", "#00BBF9"];
 

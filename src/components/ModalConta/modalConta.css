@@ -15,14 +15,14 @@
     width: min(100%, 420px);
     max-height: calc(100vh - 2rem);
     overflow-y: auto;
-    background: linear-gradient(180deg, #1c1c1c 0%, #141414 100%);
-    border: 1px solid rgba(247, 211, 84, 0.12);
-    border-radius: 16px;
+    background: linear-gradient(180deg, var(--color-surface-start) 0%, var(--color-surface-end) 100%);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-xl);
     padding: 2rem;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    box-shadow: 0 25px 70px -15px rgba(0, 0, 0, 0.7);
+    box-shadow: var(--shadow-modal);
 }
 
 .modal-conta-fechar {
@@ -31,17 +31,17 @@
     right: 0.75rem;
     width: 32px;
     height: 32px;
-    border: 1px solid #2a2a2a;
-    border-radius: 8px;
-    background: #1f1f1f;
-    color: #9a9a9a;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-input);
+    color: var(--color-text-muted);
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
 }
 
 .modal-conta-fechar:hover {
-    background: #2a2a2a;
-    color: #fff;
+    background: var(--color-border);
+    color: var(--color-text-primary);
 }
 
 /* Header: avatar à esquerda, nome/email ao lado */
@@ -58,14 +58,14 @@
 }
 
 .modal-conta-identidade h2 {
-    color: #fff;
+    color: var(--color-text-primary);
     font-size: 1.25rem;
     font-weight: 700;
     letter-spacing: -0.01em;
 }
 
 .modal-conta-identidade p {
-    color: #6b6b6b;
+    color: var(--color-text-subtle);
     font-size: 0.85rem;
 }
 
@@ -78,11 +78,11 @@
 .modal-conta-links a {
     flex: 1;
     text-align: center;
-    border: 1px solid rgba(247, 211, 84, 0.25);
-    background: rgba(247, 211, 84, 0.05);
-    color: #f3fd6b;
+    border: 1px solid var(--color-border-accent);
+    background: var(--color-accent-gold-soft);
+    color: var(--color-accent);
     padding: 0.7rem 0.8rem;
-    border-radius: 10px;
+    border-radius: var(--radius-lg);
     font-weight: 600;
     font-size: 0.9rem;
     text-decoration: none;
@@ -90,18 +90,18 @@
 }
 
 .modal-conta-links a:hover {
-    background: rgba(247, 211, 84, 0.12);
-    border-color: rgba(247, 211, 84, 0.45);
+    background: rgba(247, 211, 84, 0.16);
+    border-color: var(--color-accent-gold);
 }
 
 /* Botão alterar senha: abaixo dos dois, largura total */
 .botao-alterar-senha {
     width: 100%;
-    border: 1px solid #2a2a2a;
-    background: #1f1f1f;
-    color: #e0e0e0;
+    border: 1px solid var(--color-border);
+    background: var(--color-input);
+    color: var(--color-text-soft);
     padding: 0.8rem;
-    border-radius: 10px;
+    border-radius: var(--radius-lg);
     font-weight: 600;
     font-size: 0.9rem;
     cursor: pointer;
@@ -109,8 +109,8 @@
 }
 
 .botao-alterar-senha:hover {
-    background: #242424;
-    border-color: #F3FD6B;
+    background: var(--color-input-focus);
+    border-color: var(--color-accent);
 }
 
 .form-alterar-senha {
@@ -124,7 +124,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
-    color: #b3b3b3;
+    color: var(--color-text-secondary);
     font-size: 0.85rem;
     font-weight: 600;
 }
@@ -132,15 +132,15 @@
 .campo-senha-input {
     display: flex;
     align-items: center;
-    background: #1f1f1f;
-    border: 1px solid #2a2a2a;
-    border-radius: 10px;
+    background: var(--color-input);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
     overflow: hidden;
     transition: border-color 0.2s;
 }
 
 .campo-senha-input:focus-within {
-    border-color: #F3FD6B;
+    border-color: var(--color-accent);
 }
 
 .campo-senha-input input {
@@ -148,14 +148,14 @@
     min-width: 0;
     border: none;
     background: transparent;
-    color: #fff;
+    color: var(--color-text-primary);
     padding: 0.85rem 1rem;
     font-size: 0.95rem;
     outline: none;
 }
 
 .campo-senha-input input::placeholder {
-    color: #555;
+    color: var(--color-text-subtle);
 }
 
 .campo-senha-input button {
@@ -163,9 +163,9 @@
     height: 100%;
     padding: 0.85rem 0;
     border: none;
-    border-left: 1px solid #2a2a2a;
-    background: #242424;
-    color: #F3FD6B;
+    border-left: 1px solid var(--color-border);
+    background: var(--color-input-focus);
+    color: var(--color-accent);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -173,22 +173,22 @@
 }
 
 .mensagem {
-    border-radius: 10px;
+    border-radius: var(--radius-lg);
     padding: 0.7rem 0.9rem;
     text-align: center;
     font-size: 0.85rem;
 }
 
 .mensagem.erro {
-    color: #ff7373;
-    background: rgba(220, 53, 69, 0.12);
-    border: 1px solid rgba(220, 53, 69, 0.3);
+    color: var(--color-error);
+    background: var(--color-error-bg);
+    border: 1px solid var(--color-error-border);
 }
 
 .mensagem.sucesso {
-    color: #b7ff8a;
-    background: rgba(67, 160, 71, 0.16);
-    border: 1px solid rgba(67, 160, 71, 0.35);
+    color: var(--color-success);
+    background: var(--color-success-bg);
+    border: 1px solid var(--color-success-border);
 }
 
 .modal-conta-acoes {
@@ -199,7 +199,7 @@
 .modal-conta-acoes button {
     flex: 1;
     padding: 0.75rem;
-    border-radius: 10px;
+    border-radius: var(--radius-lg);
     font-weight: 700;
     font-size: 0.9rem;
     cursor: pointer;
@@ -208,18 +208,18 @@
 
 .modal-conta-acoes button[type="button"] {
     background: transparent;
-    border: 1px solid #2a2a2a;
-    color: #b3b3b3;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
 }
 
 .modal-conta-acoes button[type="button"]:hover {
-    background: #1f1f1f;
+    background: var(--color-input);
 }
 
 .modal-conta-acoes button[type="submit"] {
-    background: #f3fd6b;
+    background: var(--color-accent);
     border: none;
-    color: #111;
+    color: var(--color-text-inverse);
 }
 
 .modal-conta-acoes button[type="submit"]:hover {
